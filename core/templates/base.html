@@ -48,72 +48,37 @@
         </style>
 
         <style>
-        /* MOBILE NAVBAR FIX */
-        @media (max-width: 575.98px) {
 
-            .navbar .order-lg-3 {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-
-            .navbar .open-login,
-            .navbar .open-signup {
-                white-space: nowrap;
-            }
-
-            .navbar .open-login {
-                margin-right: 0 !important;
-            }
-
-            .navbar .open-signup {
-                margin-right: 0 !important;
-            }
-
-            .navbar .navbar-toggler {
-                margin-left: 0 !important;
-                border: 2px solid var(--bs-info);
-                border-radius: 12px;
-                padding: 0;
-                width: 52px;
-                height: 52px;
-
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                position: relative;
-            }
-
-            .navbar .navbar-toggler .icon-bar {
-                background-color: var(--bs-info) !important;
-            }
-
-            /* hamburger çizgileri */
-            .navbar-toggler .top-bar,
-            .navbar-toggler .middle-bar,
-            .navbar-toggler .bottom-bar {
-                width: 22px;
-                height: 2px;
-                background-color: var(--bs-info) !important;
-                display: block;
-                position: absolute;
-                border-radius: 10px;
-                transition: all 0.25s ease;
-            }
-
-            .navbar-toggler .top-bar {
-                transform: translateY(-7px);
-            }
-
-            .navbar-toggler .middle-bar {
-                transform: translateY(0);
-            }
-
-            .navbar-toggler .bottom-bar {
-                transform: translateY(7px);
-            }
+        /* NAVBAR LINK HOVER */
+        .navbar .nav-link:hover,
+        .navbar .nav-link:focus,
+        .navbar .nav-link.active,
+        .navbar .dropdown-toggle:hover,
+        .navbar .dropdown-toggle:focus {
+            color: var(--bs-info) !important;
         }
+
+        /* DROPDOWN ITEM HOVER */
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            color: var(--bs-info) !important;
+            background-color: rgba(13, 202, 240, 0.08) !important;
+        }
+
+        /* TOGGLER ICON COLOR */
+        .navbar-toggler {
+            border-color: var(--bs-info) !important;
+        }
+
+        .navbar-toggler .icon-bar {
+            display: block;
+            width: 22px;
+            height: 2px;
+            margin: 4px auto;
+            background-color: var(--bs-info) !important;
+            transition: all 0.2s;
+        }
+
         </style>
 
 </head>
@@ -156,12 +121,11 @@
                 aria-controls="navbar-default"
                 aria-expanded="false"
                 aria-label="Toggle navigation">
-
-                  <span class="icon-bar top-bar"></span>
-                  <span class="icon-bar middle-bar"></span>
-                  <span class="icon-bar bottom-bar"></span>
-
+                <span class="icon-bar top-bar mt-0"></span>
+                <span class="icon-bar middle-bar"></span>
+                <span class="icon-bar bottom-bar"></span>
               </button>
+            </div>
 
             <!-- Menu -->
             <div class="collapse navbar-collapse" id="navbar-default">
