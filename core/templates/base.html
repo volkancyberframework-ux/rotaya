@@ -48,39 +48,73 @@
         </style>
 
         <style>
-/* Mobile navbar düzeltme */
-.navbar .navbar-toggler {
-    margin-left: 14px;
-    border: 2px solid var(--bs-info);
-    border-radius: 12px;
-    padding: 10px 12px;
-}
+        /* MOBILE NAVBAR FIX */
+        @media (max-width: 575.98px) {
 
-.navbar .navbar-toggler .icon-bar {
-    background-color: var(--bs-info) !important;
-}
+            .navbar .order-lg-3 {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
 
-@media (max-width: 575.98px) {
+            .navbar .open-login,
+            .navbar .open-signup {
+                white-space: nowrap;
+            }
 
-    .navbar .order-lg-3 {
-        display: flex;
-        align-items: center;
-    }
+            .navbar .open-login {
+                margin-right: 0 !important;
+            }
 
-    .navbar .open-login {
-        margin-right: 10px !important;
-    }
+            .navbar .open-signup {
+                margin-right: 0 !important;
+            }
 
-    .navbar .open-signup {
-        margin-right: 6px;
-    }
+            .navbar .navbar-toggler {
+                margin-left: 0 !important;
+                border: 2px solid var(--bs-info);
+                border-radius: 12px;
+                padding: 0;
+                width: 52px;
+                height: 52px;
 
-    .navbar .open-login,
-    .navbar .open-signup {
-        white-space: nowrap;
-    }
-}
-</style>
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                position: relative;
+            }
+
+            .navbar .navbar-toggler .icon-bar {
+                background-color: var(--bs-info) !important;
+            }
+
+            /* hamburger çizgileri */
+            .navbar-toggler .top-bar,
+            .navbar-toggler .middle-bar,
+            .navbar-toggler .bottom-bar {
+                width: 22px;
+                height: 2px;
+                background-color: var(--bs-info) !important;
+                display: block;
+                position: absolute;
+                border-radius: 10px;
+                transition: all 0.25s ease;
+            }
+
+            .navbar-toggler .top-bar {
+                transform: translateY(-7px);
+            }
+
+            .navbar-toggler .middle-bar {
+                transform: translateY(0);
+            }
+
+            .navbar-toggler .bottom-bar {
+                transform: translateY(7px);
+            }
+        }
+        </style>
 
 </head>
 
@@ -115,18 +149,19 @@
 
               <!-- Mobile Toggle -->
               <button
-                class="navbar-toggler collapsed border border-info rounded-3"
+                class="navbar-toggler collapsed"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#navbar-default"
                 aria-controls="navbar-default"
                 aria-expanded="false"
                 aria-label="Toggle navigation">
-                <span class="icon-bar top-bar mt-0 bg-info"></span>
-                <span class="icon-bar middle-bar bg-info"></span>
-                <span class="icon-bar bottom-bar bg-info"></span>
+
+                  <span class="icon-bar top-bar"></span>
+                  <span class="icon-bar middle-bar"></span>
+                  <span class="icon-bar bottom-bar"></span>
+
               </button>
-            </div>
 
             <!-- Menu -->
             <div class="collapse navbar-collapse" id="navbar-default">
