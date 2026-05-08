@@ -2,7 +2,7 @@ from random import sample
 from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
-
+from django.contrib.auth.decorators import login_required
 from .models import (
     Course,
     Mentor,
@@ -247,7 +247,7 @@ def courses(request):
     })
 
 
-
+@login_required(login_url="/login/")
 def course_detail(request, slug):
     course = get_object_or_404(
         Course.objects.select_related("mentor", "category", "subcategory"),
