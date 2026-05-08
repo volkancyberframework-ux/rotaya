@@ -48,41 +48,37 @@
         </style>
 
         <style>
-/* Navbar mobile düzen */
+/* Mobile navbar düzeltme */
 .navbar .navbar-toggler {
-  border-color: var(--bs-info);
-  color: var(--bs-info);
-  margin-left: 14px;
-  width: 48px;
-  height: 48px;
-  padding: 10px;
+    margin-left: 14px;
+    border: 2px solid var(--bs-info);
+    border-radius: 12px;
+    padding: 10px 12px;
 }
 
 .navbar .navbar-toggler .icon-bar {
-  background-color: var(--bs-info) !important;
+    background-color: var(--bs-info) !important;
 }
 
-.navbar .open-signup {
-  margin-right: 0;
-}
-
-/* Mobilde butonlar ve menü ikonu rahat dursun */
 @media (max-width: 575.98px) {
-  .navbar .order-lg-3 {
-    gap: 12px;
-  }
 
-  .navbar .open-login,
-  .navbar .open-signup {
-    padding-left: 18px;
-    padding-right: 18px;
-    white-space: nowrap;
-  }
+    .navbar .order-lg-3 {
+        display: flex;
+        align-items: center;
+    }
 
-  .navbar .navbar-toggler {
-    margin-left: 12px;
-    flex-shrink: 0;
-  }
+    .navbar .open-login {
+        margin-right: 10px !important;
+    }
+
+    .navbar .open-signup {
+        margin-right: 6px;
+    }
+
+    .navbar .open-login,
+    .navbar .open-signup {
+        white-space: nowrap;
+    }
 }
 </style>
 
