@@ -47,6 +47,45 @@
         }
         </style>
 
+        <style>
+/* Navbar mobile düzen */
+.navbar .navbar-toggler {
+  border-color: var(--bs-info);
+  color: var(--bs-info);
+  margin-left: 14px;
+  width: 48px;
+  height: 48px;
+  padding: 10px;
+}
+
+.navbar .navbar-toggler .icon-bar {
+  background-color: var(--bs-info) !important;
+}
+
+.navbar .open-signup {
+  margin-right: 0;
+}
+
+/* Mobilde butonlar ve menü ikonu rahat dursun */
+@media (max-width: 575.98px) {
+  .navbar .order-lg-3 {
+    gap: 12px;
+  }
+
+  .navbar .open-login,
+  .navbar .open-signup {
+    padding-left: 18px;
+    padding-right: 18px;
+    white-space: nowrap;
+  }
+
+  .navbar .navbar-toggler {
+    margin-left: 12px;
+    flex-shrink: 0;
+  }
+}
+</style>
+
 </head>
 
     <body class="bg-white">
@@ -80,16 +119,16 @@
 
               <!-- Mobile Toggle -->
               <button
-                class="navbar-toggler collapsed"
+                class="navbar-toggler collapsed border border-info rounded-3"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#navbar-default"
                 aria-controls="navbar-default"
                 aria-expanded="false"
                 aria-label="Toggle navigation">
-                <span class="icon-bar top-bar mt-0"></span>
-                <span class="icon-bar middle-bar"></span>
-                <span class="icon-bar bottom-bar"></span>
+                <span class="icon-bar top-bar mt-0 bg-info"></span>
+                <span class="icon-bar middle-bar bg-info"></span>
+                <span class="icon-bar bottom-bar bg-info"></span>
               </button>
             </div>
 
