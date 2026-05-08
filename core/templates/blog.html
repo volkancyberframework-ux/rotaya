@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="py-8">
+  <div class="container">
+
+    <style>
+      .blog-author-avatar {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+
+      .blog-card-image {
+        height: 220px;
+        object-fit: cover;
+      }
+    </style>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-12 col-12">
+        <div class="mb-8 text-center">
+          <span class="text-info mb-3 d-block text-uppercase fw-semibold ls-xl">
+            ROTAYA BAŞARI HİKAYELERİ
+          </span>
+          <h1 class="fw-bold mb-3">Başarılarımız</h1>
+          <p class="lead mb-0">
+            Rotaya topluluğunda gerçek insanların gerçek dönüşüm hikayelerini burada paylaşıyoruz.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+
+      {% for post in blog_posts %}
+      <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+        <div class="card mb-4 shadow-lg card-lift">
+
+          <a href="#" data-bs-toggle="modal" data-bs-target="#blogModal{{ post.id }}">
+            {% if post.image %}
+              <img src="{{ post.image.url }}" class="card-img-top blog-card-image" alt="{{ post.title }}">
+            {% else %}
+              <img src="{% static 'assets/images/blog/blogpost-3.jpg' %}" class="card-img-top blog-card-image" alt="{{ post.title }}">
+            {% endif %}
+          </a>
+
+          <div class="card-body">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#blogModal{{ post.id }}" class="fs-5 fw-semibold d-block mb-3 text-info">
+              {{ post.get_category_display }}
+            </a>
+
+            <h3>
+              <a href="#" data-bs-toggle="modal" data-bs-target="#blogModal{{ post.id }}" class="text-inherit">
+                {{ post.title }}
+              </a>
+            </h3>
+
+            <p>
+              {% if post.excerpt %}
+                {{ post.excerpt|truncatechars:120 }}
+              {% else %}
+                {{ post.content|striptags|truncatechars:120 }}
+              {% endif %}
+            </p>
+
+            <div class="d-flex align-items-center mt-4">
+              <div class="me-3">
+                {% if post.author and post.author.use_anonymous_photo %}
+                  <img src="{% static post.author_avatar_url %}"
+                       alt="{{ post.author_name }}"
+                       class="blog-author-avatar">
+                {% else %}
+                  <img src="{{ post.author_avatar_url }}"
+                       alt="{{ post.author_name }}"
+                       class="blog-author-avatar">
+                {% endif %}
+              </div>
+
+              <div class="flex-grow-1">
+                <h5 class="mb-1">{{ post.author_name }}</h5>
+                <p class="fs-6 mb-0">{{ post.created_at|date:"d F Y" }}</p>
+              </div>
+
+              <div>
+                <p class="fs-6 mb-0">{{ post.read_time }} dk</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal fade" id="blogModal{{ post.id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content rounded-4 border-0 shadow-lg">
+
+            <div class="modal-header border-0 px-5 pt-5">
+              <div>
+                <span class="text-info fw-semibold d-block mb-2">
+                  {{ post.get_category_display }}
+                </span>
+                <h2 class="fw-bold mb-1">{{ post.title }}</h2>
+                <p class="text-muted mb-0">
+                  {{ post.author_name }} · {{ post.created_at|date:"d F Y" }} · {{ post.read_time }} dk okuma
+                </p>
+              </div>
+
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body px-5 pb-5">
+
+              {% if post.image %}
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid rounded-3 shadow-sm mb-5 w-100" style="max-height: 420px; object-fit: cover;">
+              {% else %}
+                <img src="{% static 'assets/images/blog/blogpost-3.jpg' %}" alt="{{ post.title }}" class="img-fluid rounded-3 shadow-sm mb-5 w-100" style="max-height: 420px; object-fit: cover;">
+              {% endif %}
+
+              <div class="fs-4 lh-lg">
+                {{ post.content|linebreaks }}
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {% empty %}
+      <div class="col-12">
+        <div class="text-center py-8">
+          <h3>Henüz başarı hikayesi eklenmedi.</h3>
+          <p class="text-muted mb-0">Yakında burada topluluğumuzdan güzel hikayeler paylaşacağız.</p>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

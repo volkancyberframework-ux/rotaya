@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="155" height="102" viewBox="0 0 155 102" xmlns="http://www.w3.org/2000/svg">
+  <rect width="155" height="102" fill="none"/>
+
+  <rect x="38" y="31" width="79" height="32" rx="16" fill="#ffffff"/>
+  <circle cx="56" cy="47" r="10" fill="#38A169"/>
+  <path d="M51.5 47.2L54.7 50.4L61.4 43.4" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <text x="73" y="51" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" fill="#38A169">Onaylı</text>
+</svg>

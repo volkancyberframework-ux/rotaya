@@ -1,0 +1,427 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<main>
+
+  <!-- Video section -->
+  <section class="p-lg-5 py-7">
+    <div class="container">
+
+      <!-- Video -->
+      <div style="width:100%; padding:0; margin:0 0 40px 0;">
+        <div style="width:100%; height:80vh; min-height:650px; background:#000; border-radius:16px; overflow:hidden; position:relative;">
+
+          {% if first_video and first_video.video_url %}
+            <iframe
+              src="{{ first_video.video_url }}"
+              title="{{ first_video.title }}"
+              style="position:absolute !important; top:0 !important; left:0 !important; width:100% !important; height:100% !important; border:0 !important; display:block !important;"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen>
+            </iframe>
+
+          {% elif first_video and first_video.video_file %}
+            <video controls style="position:absolute !important; top:0 !important; left:0 !important; width:100% !important; height:100% !important; object-fit:cover !important; display:block !important;">
+              <source src="{{ first_video.video_file.url }}">
+              Tarayıcınız video etiketini desteklemiyor.
+            </video>
+
+          {% else %}
+            <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; color:white;">
+              <div>
+                <h2 class="text-white mb-2">Video yakında eklenecek</h2>
+                <p class="mb-0">Bu alana ileride Bunny veya Cloudflare video linki gelecek.</p>
+              </div>
+            </div>
+          {% endif %}
+
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="row">
+        <div class="col-12">
+
+          <!-- Course Header Card -->
+          <div class="card mb-5">
+            <div class="card-body">
+
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  {% if course.category %}
+                    <span class="badge text-light-emphasis bg-light-subtle border border-light-subtle rounded-pill mb-3">
+                      {{ course.category.name }}
+                    </span>
+                  {% endif %}
+
+                  <h1 class="fw-semibold mb-2">
+                    {{ course.title }}
+                  </h1>
+                </div>
+
+                <a href="#" data-bs-toggle="tooltip" data-placement="top" title="Kaydet">
+                  <i class="fe fe-bookmark fs-4 fs-3 text-inherit"></i>
+                </a>
+              </div>
+
+              <div class="d-flex flex-wrap mb-5 lh-1 gap-3 align-items-center">
+                <span class="d-flex align-items-center gap-1">
+                  <span class="text-warning">★</span>
+                  <span class="fw-medium">{{ course.rating }}</span>
+                  <span class="text-muted">({{ course.rating_count }})</span>
+                </span>
+
+                <span>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE"></rect>
+                    <rect x="7" y="5" width="2" height="9" rx="1" fill="#754FFE"></rect>
+                    <rect x="11" y="2" width="2" height="12" rx="1" fill="#DBD8E9"></rect>
+                  </svg>
+                  <span>{{ course.get_level_display }}</span>
+                </span>
+
+                <span>
+                  <i class="fe fe-clock"></i>
+                  <span>{{ course.duration_label }}</span>
+                </span>
+
+                <span>
+                  <i class="fe fe-play-circle"></i>
+                  <span>{{ course.content_count }} içerik</span>
+                </span>
+
+                <span>
+                  <i class="fe fe-users"></i>
+                  <span>{{ course.student_count }} öğrenci</span>
+                </span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+
+                  {% if course.mentor and course.mentor.use_anonymous_photo %}
+                    <img
+                      src="{% static course.mentor.anonymous_photo %}"
+                      class="rounded-circle avatar-md"
+                      alt="Anonim Mentor"
+                      style="object-fit: cover;"
+                    />
+                  {% elif course.mentor and course.mentor.photo %}
+                    <img
+                      src="{{ course.mentor.photo.url }}"
+                      class="rounded-circle avatar-md"
+                      alt="{{ course.mentor.full_name }}"
+                      style="object-fit: cover;"
+                    />
+                  {% else %}
+                    <img
+                      src="{% static 'assets/images/avatar/avatar-1.jpg' %}"
+                      class="rounded-circle avatar-md"
+                      alt="mentor"
+                      style="object-fit: cover;"
+                    />
+                  {% endif %}
+
+                  <div class="ms-2 lh-1">
+                    <h4 class="mb-1">
+                      {% if course.mentor %}
+                        {{ course.mentor.full_name }}
+                      {% else %}
+                        Rotaya Mentörü
+                      {% endif %}
+                    </h4>
+
+                    <p class="fs-6 mb-0">
+                      {% if course.mentor and course.mentor.title %}
+                        {{ course.mentor.title }}
+                      {% else %}
+                        Deneyim Paylaşımı
+                      {% endif %}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <a href="#" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                    Yorum Yaz
+                  </a>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-lt-tab" id="tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="description-tab" data-bs-toggle="pill" href="#description" role="tab">
+                  Açıklama
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" id="videos-tab" data-bs-toggle="pill" href="#videos" role="tab">
+                  İçerikler
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" id="attachments-tab" data-bs-toggle="pill" href="#attachments" role="tab">
+                  Ekler / Eğitim İçeriği
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" id="review-tab" data-bs-toggle="pill" href="#review" role="tab">
+                  Yorumlar
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" id="faq-tab" data-bs-toggle="pill" href="#faq" role="tab">
+                  SSS
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Tab Content Card -->
+          <div class="card rounded-3">
+            <div class="card-body">
+              <div class="tab-content" id="tabContent">
+
+                <!-- Description -->
+                <div class="tab-pane fade show active" id="description" role="tabpanel">
+                  <div class="mb-4">
+                    <h3 class="mb-2">Kurs Açıklaması</h3>
+
+                    {% if course.description %}
+                      <p>{{ course.description|linebreaks }}</p>
+                    {% elif course.short_description %}
+                      <p>{{ course.short_description|linebreaks }}</p>
+                    {% else %}
+                      <p>Bu içerik, gerçek deneyimlerden öğrenmek isteyenler için hazırlanmıştır.</p>
+                    {% endif %}
+                  </div>
+
+                  <h4 class="mb-3">Bu kursta ne öğreneceksin?</h4>
+
+                  <ul class="list-unstyled">
+                    {% if learning_items %}
+                      {% for item in learning_items %}
+                        <li class="d-flex mb-2">
+                          <span class="me-2 text-success">✓</span>
+                          <span>{{ item }}</span>
+                        </li>
+                      {% endfor %}
+                    {% else %}
+                      <li class="d-flex mb-2">
+                        <span class="me-2 text-success">✓</span>
+                        <span>Gerçek hayatta bu konunun nasıl uygulandığını öğrenirsin.</span>
+                      </li>
+                      <li class="d-flex mb-2">
+                        <span class="me-2 text-success">✓</span>
+                        <span>Teoriden çok deneyim ve pratik bakış açısı kazanırsın.</span>
+                      </li>
+                    {% endif %}
+                  </ul>
+                </div>
+
+                <!-- Videos -->
+                <div class="tab-pane fade" id="videos" role="tabpanel">
+                  <h3 class="mb-4">Kurs İçerikleri</h3>
+
+                  {% if videos %}
+                    <div class="list-group">
+                      {% for video in videos %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                          <div>
+                            <h4 class="mb-1">{{ forloop.counter }}. {{ video.title }}</h4>
+                            {% if video.description %}
+                              <p class="mb-0 text-muted">{{ video.description|truncatewords:20 }}</p>
+                            {% endif %}
+                          </div>
+
+                          <div class="text-muted small">
+                            {{ video.duration_minutes }} dk
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    <div class="alert alert-light border mb-0">
+                      Bu kursa ait video içerikleri yakında eklenecek.
+                    </div>
+                  {% endif %}
+                </div>
+
+                <!-- Attachments -->
+                <div class="tab-pane fade" id="attachments" role="tabpanel">
+                  <h3 class="mb-4">Ekler ve Eğitim İçeriği</h3>
+
+                  {% if course.attachment %}
+                    <div class="card border shadow-sm">
+                      <div class="card-body d-flex justify-content-between align-items-center flex-wrap gap-3">
+                        <div>
+                          <h4 class="mb-1">Eğitim Dosyası</h4>
+                          <p class="mb-0 text-muted">
+                            Bu kursa ait PDF veya ek eğitim dosyasını indirebilirsin.
+                          </p>
+                        </div>
+
+                        <a href="{{ course.attachment.url }}" download class="btn btn-info btn-sm">
+                          Dosyayı İndir
+                        </a>
+                      </div>
+                    </div>
+                  {% else %}
+                    <div class="alert alert-light border mb-0">
+                      Bu kurs için henüz ek dosya yüklenmemiştir.
+                    </div>
+                  {% endif %}
+                </div>
+
+                <!-- Reviews -->
+                <div class="tab-pane fade" id="review" role="tabpanel">
+                  <div class="mb-4">
+                    <h3 class="mb-2">Öğrenci Yorumları</h3>
+                    <p class="mb-0">
+                      Ortalama puan: <strong>{{ course.rating }}</strong> / 5
+                    </p>
+                  </div>
+
+                  {% for review in reviews %}
+                    <div class="d-flex align-items-start border-bottom pb-4 mb-4">
+                      <img src="{% static 'assets/images/avatar/avatar-2.jpg' %}" alt="" class="rounded-circle avatar-lg" />
+
+                      <div class="ms-3">
+                        <h4 class="mb-1">
+                          {{ review.customer.user.first_name|default:review.customer.user.username }}
+                          <span class="ms-1 fs-6">{{ review.created_at|date:"d M Y" }}</span>
+                        </h4>
+
+                        <div class="mb-2">
+                          <span class="text-warning">
+                            {% for i in "12345" %}
+                              {% if forloop.counter <= review.rating %}
+                                ★
+                              {% else %}
+                                ☆
+                              {% endif %}
+                            {% endfor %}
+                          </span>
+                        </div>
+
+                        <p class="mb-0">{{ review.comment }}</p>
+                      </div>
+                    </div>
+                  {% empty %}
+                    <div class="alert alert-light border mb-0">
+                      Bu kurs için henüz yorum yapılmamış.
+                    </div>
+                  {% endfor %}
+                </div>
+
+                <!-- FAQ -->
+                <div class="tab-pane fade" id="faq" role="tabpanel">
+                  <h3 class="mb-4">Sık Sorulan Sorular</h3>
+
+                  <div class="accordion" id="courseFaq">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="faqOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseOne">
+                          Bu kursa nasıl erişirim?
+                        </button>
+                      </h2>
+
+                      <div id="faqCollapseOne" class="accordion-collapse collapse show" data-bs-parent="#courseFaq">
+                        <div class="accordion-body">
+                          Üyelik sistemin aktif olduğunda kullanıcılar ödeme sonrası bu kursa erişebilir.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- REVIEW MODAL -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 shadow">
+
+      <div class="modal-header border-0 px-4 pt-4">
+        <div>
+          <h3 class="mb-1">Yorum Yaz</h3>
+          <p class="text-muted mb-0">
+            Yorumun admin onayından sonra yayınlanacaktır.
+          </p>
+        </div>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body px-4 pb-4">
+
+        {% if user.is_authenticated %}
+
+          <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label class="form-label">Puan</label>
+
+              <select name="rating" class="form-select" required>
+                <option value="5">★★★★★ - 5</option>
+                <option value="4">★★★★☆ - 4</option>
+                <option value="3">★★★☆☆ - 3</option>
+                <option value="2">★★☆☆☆ - 2</option>
+                <option value="1">★☆☆☆☆ - 1</option>
+              </select>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Yorumun</label>
+
+              <textarea
+                name="comment"
+                class="form-control"
+                rows="5"
+                placeholder="Bu kurs hakkında düşüncelerini paylaş..."
+                required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-info w-100">
+              Yorumu Gönder
+            </button>
+
+          </form>
+
+        {% else %}
+
+          <div class="alert alert-light border mb-0">
+            Yorum yazabilmek için giriş yapmalısın.
+          </div>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</main>
+
+{% endblock %}

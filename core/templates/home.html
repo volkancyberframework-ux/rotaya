@@ -1,0 +1,811 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+  .mentor-card-img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    object-position: center top;
+  }
+</style>
+
+          <section
+            class="py-8 bg-auto bg-light hero-graphics"
+            style="background-image: url('{% static "assets/images/hero/bg.jpg" %}');
+                   background-size: cover;
+                   background-position: center;
+                   background-repeat: no-repeat;">
+          <div class="container my-lg-8">
+              <!-- Hero Section -->
+              <div class="row justify-content-center">
+                  <div class="col-xl-8 col-lg-10 col-md-12">
+                      <div class="text-center">
+
+                          <h1 class="mb-4 display-2 fw-bold">
+                              <span>Ne yapacağını</span>
+                              <span class="text-info" data-strings="bul., öğren., dene., belirle."></span>
+                          </h1>
+
+                          <p class="mb-6 h2 text-dark">
+                            Rotaya, gerçekten deneyen ve başaran insanlardan öğrenmeni sağlar.
+                            Çünkü gerçek tecrübe görünmez — ne Instagram’da ne YouTube’da.
+                            Burada, gerçekten yaşamış, denemiş ve başarmış insanlardan öğrenirsin.
+                          </p>
+
+                          <p class="lead text-dark fs-4 lh-lg">
+                            Dünya’daki bankaların liderlerinden, yoldaki sırt çantalı gezgine…<br>
+                            İşini batırandan, bir yılda kurup kazanana…<br>
+                            AI ile bir ayda gelir elde edenden, borcundan kurtulana kadar…<br><br>
+                          </p>
+
+
+                          <!-- Search Bar -->
+                          <div class="d-flex flex-column gap-3 mb-6">
+                            <form action="{% url 'courses' %}" method="get" class="w-100">
+                              <div class="input-group input-group-lg">
+                                <input
+                                  type="text"
+                                  name="q"
+                                  class="form-control"
+                                  placeholder="Ne yapmak istiyorsun? Örn: IT, uzaktan çalışma, AI..."
+                                  value="{{ q|default:'' }}"
+                                >
+                                <button class="btn btn-info px-5" type="submit">
+                                  Keşfet
+                                </button>
+                              </div>
+                            </form>
+
+                            <div class="d-flex flex-wrap gap-3 justify-content-center mt-5">
+                              {% for item in search_terms %}
+                                <a href="{% url 'courses' %}?q={{ item.name|urlencode }}"
+                                   class="btn btn-outline-secondary rounded-pill px-4">
+                                  {{ item.name }}
+                                </a>
+                              {% endfor %}
+                            </div>
+                          </div>
+
+                          {% if user.is_authenticated and user.customer_profile.has_paid and user.customer_profile.is_active_member %}
+                              <a href="{% url 'courses' %}" class="btn btn-info me-2">
+                                  İçeriklere Git
+                              </a>
+                          {% else %}
+                              <a href="#" class="btn btn-info me-2 open-pricing">
+                                  Planları Gör
+                              </a>
+                          {% endif %}                          <a href="#whoami" class="btn btn-outline-info">
+                              Biz kimiz?
+                          </a>
+
+                          <div class="mt-8 mb-0">
+                              <ul class="list-inline">
+                                  <li class="list-inline-item text-dark fw-semibold lh-1 fs-4 me-3 mb-2 mb-md-0">
+                                      <span class="icon-shape icon-xs rounded-circle bg-light-success text-center me-2">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-check text-success" viewBox="0 0 16 16">
+                                              <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"></path>
+                                          </svg>
+                                      </span>
+                                      <span class="align-middle">Gerçek deneyimler</span>
+                                  </li>
+
+                                  <li class="list-inline-item text-dark fw-semibold lh-1 fs-4 me-3 mb-2 mb-md-0">
+                                      <span class="icon-shape icon-xs rounded-circle bg-light-success text-center me-2">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-check text-success" viewBox="0 0 16 16">
+                                              <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"></path>
+                                          </svg>
+                                      </span>
+                                      <span class="align-middle">Türkiye’den dünyaya açılan hikayeler</span>
+                                  </li>
+
+                                  <li class="list-inline-item text-dark fw-semibold lh-1 fs-4">
+                                      <span class="icon-shape icon-xs rounded-circle bg-light-success text-center me-2">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-check text-success" viewBox="0 0 16 16">
+                                              <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"></path>
+                                          </svg>
+                                      </span>
+                                      <span class="align-middle">Kariyer, hayat ve özgürlük rotaları</span>
+                                  </li>
+                              </ul>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </section>
+
+        <!-- Call to action -->
+        <section class="py-lg-8 py-6" id="whoami">
+          <div class="container-fluid px-4 px-lg-8 py-lg-8">
+            <div class="row align-items-center">
+
+              <!-- LEFT IMAGE -->
+              <div class="col-xl-4 col-lg-5 d-none d-lg-block">
+                <div class="position-relative">
+                  <img src='{% static "assets/images/mentor/volkan.jpg" %}'
+                       alt="mentor img"
+                       class="img-fluid w-100 rounded-4" />
+
+                  <img src='{% static "assets/images/mentor/schedule.svg" %}'
+                       class="position-absolute top-50 start-100 translate-middle mt-n8 d-xl-block d-none" />
+
+                  <img src='{% static "assets/images/mentor/verify.svg" %}'
+                       class="position-absolute top-50 start-0 translate-middle mt-n2 d-xl-block d-none" />
+
+                  <img src='{% static "assets/images/mentor/card.svg" %}'
+                       class="position-absolute top-50 start-0 translate-middle mt-8 d-xl-block d-none" />
+                </div>
+              </div>
+
+              <!-- RIGHT CONTENT -->
+              <div class="col-xl-7 col-lg-7 offset-lg-1">
+                <div class="d-flex flex-column gap-6">
+
+                  <!-- HEADER -->
+                  <div>
+                    <h2 class="mb-3 h1">Bu Platform Neden Var?</h2>
+                    <p class="fs-5 mb-0">
+                      103 ülke gezmiş, 8 farklı ülkede çalışmış biri olarak şunu fark ettim:
+                      İnsanlar yolunu arıyor ama doğru rehberliği bulamıyor.
+                    </p>
+                  </div>
+
+                  <!-- ITEMS -->
+                  <div class="d-flex flex-column gap-4">
+
+                    <!-- ITEM 1 -->
+                    <div class="d-flex align-items-start gap-4 p-4 rounded-4 bg-white shadow-sm border">
+                      <div class="flex-shrink-0">
+                        <div class="icon-shape icon-lg bg-danger-subtle rounded-4 d-flex align-items-center justify-content-center">
+                          <i class="bi bi-globe2 text-danger fs-4"></i>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 class="mb-2 fw-bold">Dünyayı gezdim, farklı kariyer yollarını yerinde gördüm.</h4>
+                        <p class="mb-0 text-muted fs-5">
+                          Bilkent ve Sabancı’da eğitim aldıktan sonra dünyanın farklı ülkelerinde çalıştım ve 103 ülke gezdim.
+                          Farklı sistemleri, başarı hikayelerini ve insanların kendi yolunu nasıl bulduğunu gözlemledim.
+                          Şunu net fark ettim: En büyük eksik teori değil, gerçek deneyim.
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- ITEM 2 -->
+                    <div class="d-flex align-items-start gap-4 p-4 rounded-4 bg-white shadow-sm border">
+                      <div class="flex-shrink-0">
+                        <div class="icon-shape icon-lg bg-warning-subtle rounded-4 d-flex align-items-center justify-content-center">
+                          <i class="bi bi-question-circle text-warning fs-4"></i>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 class="mb-2 fw-bold">Herkesin sorduğu soru aynı: “Ben ne yapacağım?”</h4>
+                        <p class="mb-0 text-muted fs-5">
+                          YouTube’a başladığımda 15 yaşından 65 yaşına kadar herkesin aynı arayışta olduğunu gördüm.
+                          Problem bilgi eksikliği değil; doğru rehberliğe, gerçek örneklere ve görünmeyen tecrübelere ulaşamamak.
+                          Rotaya bu yüzden var.
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- ITEM 3 -->
+                    <div class="d-flex align-items-start gap-4 p-4 rounded-4 bg-white shadow-sm border">
+                      <div class="flex-shrink-0">
+                        <div class="icon-shape icon-lg bg-success-subtle rounded-4 d-flex align-items-center justify-content-center">
+                          <i class="bi bi-people text-success fs-4"></i>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 class="mb-2 fw-bold">Rotaya, görünmeyen kaliteli tecrübeleri bir araya getirir.</h4>
+                        <p class="mb-0 text-muted fs-5">
+                          Dünyadan öğrendiklerimi ve tanıştığım kaliteli Türk profesyonelleri bir araya getirerek bu platformu kurdum.
+                          Burada sadece bilgi değil; yaşanmış tecrübe, gerçek kararlar ve yol gösteren hikayeler bulacaksınız.
+                        </p>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <!-- BUTTON -->
+                  <div>
+                    <a href="https://www.youtube.com/@volkangulernguyen"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="btn btn-info px-5 py-3 d-inline-flex align-items-center gap-2">
+
+                        <i class="bi bi-youtube"></i>
+                        <span>Beni Daha İyi Tanıyın</span>
+
+                    </a>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+        <!-- Call to action -->
+
+        <!-- Features -->
+        <section class="py-8">
+            <div class="container mb-lg-8">
+                <div class="row mb-8 justify-content-center">
+                    <div class="col-lg-8 col-md-12 col-12 text-center">
+                        <span class="text-info mb-3 d-block text-uppercase fw-semibold ls-xl">Neden Rotaya?</span>
+                        <h2 class="mb-2 display-4 fw-bold">Yolunu arayanlar için gerçek deneyim</h2>
+                        <p class="lead mb-0">
+                            Rotaya; kariyer, eğitim, yurtdışı, girişimcilik ve hayat kararlarında sana teoriden çok gerçek tecrübe sunan bir öğrenme platformudur.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <div class="mb-4">
+                            <div class="display-4 text-info">
+                                <i class="fe fe-settings"></i>
+                            </div>
+                            <div class="mt-4">
+                                <h3>Gerçek hayattan öğren</h3>
+                                <p class="fs-4 mb-0">
+                                    Sadece kitap bilgisi değil; sahada yaşanmış, denenmiş ve sonuç üretmiş deneyimleri öğren.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <div class="mb-4">
+                            <div class="display-4 text-info">
+                                <i class="fe fe-user"></i>
+                            </div>
+                            <div class="mt-4">
+                                <h3>Kendi yolunu bul</h3>
+                                <p class="fs-4 mb-0">
+                                    Kariyer değiştirmek, yurtdışına açılmak veya yeni bir başlangıç yapmak isteyenler için net bir rota.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <div class="mb-4">
+                            <div class="display-4 text-info">
+                                <i class="fe fe-award"></i>
+                            </div>
+                            <div class="mt-4">
+                                <h3>Kaliteli insanlardan dinle</h3>
+                                <p class="fs-4 mb-0">
+                                    Dünyanın farklı yerlerinde başarı üretmiş Türk profesyonellerin hikayeleri ve dersleri.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <div class="mb-4">
+                            <div class="display-4 text-info">
+                                <i class="fe fe-users"></i>
+                            </div>
+                            <div class="mt-4">
+                                <h3>Yalnız olmadığını gör</h3>
+                                <p class="fs-4 mb-0">
+                                    15 yaşından 65 yaşına kadar yolunu arayan herkes için ilham, yön ve topluluk.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Features -->
+        <!-- Top courses -->
+        <section class="pt-5 pb-8 bg-light-gradient-bottom" id="discover">
+            <div class="container mb-lg-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-8">
+                            <span class="text-info mb-3 d-block text-uppercase fw-semibold ls-lg">
+                                KATEGORİLERİ KEŞFET
+                            </span>
+                            <h2 class="mb-1 display-4 fw-bold">
+                                Rotaya’da seni bekleyen içerikler
+                            </h2>
+                            <p class="mb-0 lead">
+                                Kariyer, yurtdışı ve dijital beceriler alanında gerçek deneyimlerle hazırlanmış içerikleri keşfet.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                  {% for course in courses %}
+                      <div class="col-xl-3 col-lg-4 col-md-6 col-12 mb-4">
+                          <div class="card card-hover h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+
+                              {% if user.is_authenticated and user.customer_profile.has_paid and user.customer_profile.is_active_member %}
+                                  <a href="{% url 'course_detail' course.slug %}">
+                              {% else %}
+                                  <a href="#" class="open-pricing">
+                              {% endif %}
+
+                                  {% if course.thumbnail %}
+                                      <img src="{{ course.thumbnail.url }}"
+                                           class="card-img-top"
+                                           alt="{{ course.title }}"
+                                           style="height: 220px; object-fit: cover;">
+                                  {% else %}
+                                      <img src="{% static 'assets/images/course/course-react.jpg' %}"
+                                           class="card-img-top"
+                                           alt="{{ course.title }}"
+                                           style="height: 220px; object-fit: cover;">
+                                  {% endif %}
+                              </a>
+
+                              <div class="card-body">
+
+                                  <!-- TITLE -->
+                                  <h4 class="mb-2 fw-bold" style="min-height: 56px;">
+                                      {% if user.is_authenticated and user.customer_profile.has_paid and user.customer_profile.is_active_member %}
+                                          <a href="{% url 'course_detail' course.slug %}" class="text-inherit text-decoration-none">
+                                      {% else %}
+                                          <a href="#" class="text-inherit text-decoration-none open-pricing">
+                                      {% endif %}
+                                          {{ course.title }}
+                                      </a>
+                                  </h4>
+
+                                  <!-- DESC -->
+                                  <p class="mb-3 small text-muted text-truncate-line-2">
+                                      {{ course.short_description|default:course.subtitle|default:"Gerçek deneyimlerden öğren." }}
+                                  </p>
+
+                                  <!-- META -->
+                                  <ul class="mb-3 list-inline small">
+                                      <li class="list-inline-item">
+                                          ⏱ {{ course.duration_label }}
+                                      </li>
+
+                                      <li class="list-inline-item">
+                                          🎯 {{ course.get_level_display }}
+                                      </li>
+                                  </ul>
+
+                                  <!-- RATING -->
+                                  <div class="lh-1">
+                                      <span class="text-warning fw-semibold">
+                                          ★ {{ course.rating }}
+                                      </span>
+
+                                      <span class="fs-6 text-muted">
+                                          ({{ course.rating_count }})
+                                      </span>
+                                  </div>
+                              </div>
+
+                              <!-- FOOTER -->
+                              <div class="card-footer bg-white border-top-0 pt-0 pb-4 px-4">
+                                  <div class="d-flex align-items-center">
+
+                                    {% if course.mentor and course.mentor.use_anonymous_photo %}
+                                        <img src="{% static course.mentor.anonymous_photo %}"
+                                             class="rounded-circle"
+                                             alt="Anonim Mentor"
+                                             style="width:42px; height:42px; object-fit:cover;">
+                                    {% elif course.mentor and course.mentor.photo %}
+                                        <img src="{{ course.mentor.photo.url }}"
+                                             class="rounded-circle"
+                                             alt="{{ course.mentor.full_name }}"
+                                             style="width:42px; height:42px; object-fit:cover;">
+                                    {% else %}
+                                        <img src="{% static 'assets/images/avatar/avatar-1.jpg' %}"
+                                             class="rounded-circle"
+                                             alt="Mentor"
+                                             style="width:42px; height:42px; object-fit:cover;">
+                                    {% endif %}
+
+                                      <!-- Mentor Name -->
+                                      <div class="ms-3">
+
+                                          {% if user.is_authenticated and user.customer_profile.has_paid and user.customer_profile.is_active_member %}
+
+                                              <div class="fw-semibold">
+                                                  {% if course.mentor %}
+                                                      {{ course.mentor.full_name }}
+                                                  {% else %}
+                                                      Rotaya Mentörü
+                                                  {% endif %}
+                                              </div>
+
+                                              <div class="small text-muted">
+                                                  {{ course.mentor.title|default:"İçerik Üreticisi" }}
+                                              </div>
+
+                                              {% else %}
+
+                                                  <div class="fw-semibold">
+                                                      {% if course.mentor %}
+                                                          {{ course.mentor.first_name|slice:":1" }}****
+                                                          {{ course.mentor.last_name|slice:":1" }}****
+                                                      {% else %}
+                                                          V**** G****
+                                                      {% endif %}
+                                                  </div>
+
+                                                  <div class="small text-muted">
+                                                      {{ course.mentor.title|default:"İçerik Üreticisi" }}
+                                                  </div>
+
+                                              {% endif %}
+
+                                      </div>
+
+                                      <!-- Bookmark -->
+                                      <div class="ms-auto">
+                                          <i class="fe fe-bookmark fs-5 text-muted"></i>
+                                      </div>
+
+                                  </div>
+                              </div>
+
+                          </div>
+                      </div>
+
+                  {% empty %}
+                      <div class="col-12">
+                          <div class="alert alert-light border rounded-3">
+                              Henüz yayınlanmış kurs bulunmuyor.
+                          </div>
+                      </div>
+                  {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-md-12 mt-3 text-center">
+              <a href="{% url 'courses' %}" class="btn btn-info">
+                    Tüm İçerikleri Keşfet
+              </a>
+            </div>
+        </section>
+
+        <!-- Rotaya Mentors -->
+        <section class="py-8">
+            <div class="container my-lg-8">
+
+                <!-- HEADER -->
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-md-12 col-12">
+                        <div class="mb-8 text-center">
+
+                            <span class="text-info mb-3 d-block text-uppercase fw-semibold ls-xl">
+                                ROTAYA İÇERİK ÜRETİCİLERİ
+                            </span>
+
+                            <h2 class="mb-2 display-4 fw-bold">
+                                Gerçek Hayatı Deneyimleyen İnsanlardan Öğren
+                            </h2>
+
+                            <p class="lead mb-0">
+                                Rotaya’da sadece teoriyi değil; gerçek insanların gerçek deneyimlerini öğrenirsin.
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MENTORS -->
+                <div class="row">
+
+                    {% for mentor in mentors %}
+
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4 h-100">
+
+                            <!-- PHOTO -->
+                            {% if mentor.use_anonymous_photo %}
+                                <img src="{% static mentor.anonymous_photo %}"
+                                     alt="Anonim Mentor"
+                                     class="card-img-top mentor-card-img">
+
+                            {% elif mentor.photo %}
+                                <img src="{{ mentor.photo.url }}"
+                                     alt="{{ mentor.full_name }}"
+                                     class="card-img-top mentor-card-img">
+
+                            {% else %}
+                                <img src="{% static 'assets/images/instructor/instructor-img-1.jpg' %}"
+                                     alt="Mentor"
+                                     class="card-img-top mentor-card-img">
+                            {% endif %}
+
+                            <!-- BODY -->
+                            <div class="card-body p-4 d-flex flex-column">
+
+                                <!-- NAME -->
+                                <h3 class="fw-bold mb-1">
+                                    {{ mentor.full_name }}
+                                </h3>
+
+                                <!-- TITLE -->
+                                <p class="text-dark mb-3 fs-4">
+                                    {{ mentor.title|default:"Rotaya Mentörü" }}
+                                </p>
+
+                                <!-- COMPANY + LOCATION -->
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+
+                                    {% if mentor.company %}
+                                        <span class="badge rounded-pill bg-light text-dark border px-3 py-2 fw-medium">
+                                            💼 {{ mentor.company }}
+                                        </span>
+                                    {% endif %}
+
+                                    {% if mentor.location %}
+                                        <span class="badge rounded-pill bg-light text-dark border px-3 py-2 fw-medium">
+                                            🌍 {{ mentor.location }}
+                                        </span>
+                                    {% endif %}
+
+                                </div>
+
+                                <!-- STATS -->
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+
+                                    <span class="badge rounded-pill bg-light text-dark border px-3 py-2">
+                                        ⭐ {{ mentor.rating }}
+                                    </span>
+
+                                    <span class="badge rounded-pill bg-light text-dark border px-3 py-2">
+                                        👥 {{ mentor.mentee_count }}+
+                                    </span>
+
+                                    <span class="badge rounded-pill bg-light text-dark border px-3 py-2">
+                                        🎥 {{ mentor.courses.count }}
+                                    </span>
+
+                                </div>
+
+                                <!-- BUTTON -->
+                                <div class="mt-auto">
+                                    {% if user.is_authenticated and user.customer_profile.has_paid and user.customer_profile.is_active_member %}
+                                        <a href="{% url 'mentor' %}"
+                                           class="btn btn-outline-info rounded-pill w-100 fw-semibold">
+                                            Profili İncele
+                                        </a>
+                                    {% else %}
+                                        <a href="#"
+                                           class="btn btn-outline-info rounded-pill w-100 fw-semibold"
+                                           data-bs-toggle="modal"
+                                           data-bs-target="#pricingModal">
+                                            Profili İncele
+                                        </a>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    {% empty %}
+
+                    <div class="col-12">
+                        <div class="alert alert-light border">
+                            Henüz aktif mentor bulunmuyor.
+                        </div>
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <!-- FOOTER BUTTON -->
+                <div class="text-center mt-4">
+                    <a href="{% url 'mentor' %}"
+                       class="btn btn-info rounded-pill px-5">
+                        Tüm İçerik Üreticileri Keşfet
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Instructor -->
+        <section class="py-8">
+            <div class="container mb-lg-8">
+                <div class="row mb-4 justify-content-center">
+                    <div class="col-lg-11 col-md-12">
+                        <div class="row align-items-center">
+
+                            <div class="col-md-12 col-12 mb-4">
+                                <div class="avatar-group me-5">
+                                    <span class="avatar avatar-lg">
+                                        <img src="{% static 'assets/images/avatar/avatar-1.jpg' %}" class="rounded-circle">
+                                    </span>
+                                    <span class="avatar avatar-lg">
+                                        <img src="{% static 'assets/images/avatar/avatar-2.jpg' %}" class="rounded-circle">
+                                    </span>
+                                    <span class="avatar avatar-lg">
+                                        <img src="{% static 'assets/images/avatar/avatar-3.jpg' %}" class="rounded-circle">
+                                    </span>
+                                    <span class="avatar avatar-lg">
+                                        <img src="{% static 'assets/images/avatar/avatar-4.jpg' %}" class="rounded-circle">
+                                    </span>
+                                    <span class="avatar avatar-lg avatar-danger">
+                                        <span class="avatar-initials rounded-circle fs-5 fw-bold">500k+</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- HEADLINE -->
+                            <div class="col-lg-4 col-md-5 col-12 mb-6">
+                                <h1 class="display-3 fw-bold">Yolunu arayanlara sen de destek olmak ister misin?</h1>
+                            </div>
+
+                            <!-- DESCRIPTION -->
+                            <div class="offset-lg-1 col-lg-6 col-md-7 col-12 mb-6">
+                                <p class="lead mb-0">
+                                    Rotaya’da deneyimlemiş, yaşamış, başarmış (veya ne yaparak başaramamış)
+                                    insanların hikayeleri anlatılır. Sen de kendi yolculuğunu paylaşarak
+                                    insanlara ilham olabilir, onların hayatında gerçek bir fark yaratabilirsin.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <!-- FEATURES -->
+                        <div class="row">
+
+                            <!-- ITEM 1 -->
+                            <div class="col-lg-4 col-md-4 col-12 mb-3">
+                                <h3 class="fw-semibold mb-2">Kazanç elde et</h3>
+                                <p class="fs-4 mb-0">
+                                    İçeriklerin ne kadar izlenirse, o kadar kazanırsın.
+                                    Rotaya’da gelir paylaşımı izlenme oranına göre yapılır.
+                                </p>
+                            </div>
+
+                            <!-- ITEM 2 -->
+                            <div class="col-lg-4 col-md-4 col-12 mb-3">
+                                <h3 class="fw-semibold mb-2">İnsanlara yön ver</h3>
+                                <p class="fs-4 mb-0">
+                                    Kendi yaşadıklarını anlatarak insanların daha doğru kararlar almasına
+                                    yardımcı ol. Bir kişinin hayatını değiştirmek düşündüğünden daha kolay.
+                                </p>
+                            </div>
+
+                            <!-- ITEM 3 -->
+                            <div class="col-lg-4 col-md-4 col-12 mb-3">
+                                <h3 class="fw-semibold mb-2">Topluluğun parçası ol</h3>
+                                <p class="fs-4 mb-0">
+                                    Aynı yoldan geçmiş, benzer şeyleri yaşamış insanlarla bir araya gel.
+                                    Deneyim paylaşımıyla büyüyen güçlü bir ağın içinde yer al.
+                                </p>
+                            </div>
+
+                            <!-- BUTTON -->
+                            <div class="col-md-12 mt-3">
+                                <a href="#" class="btn btn-info open-story-modal">
+                                    Hikayeni Paylaşmaya Başla
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Reviews -->
+            <div class="container">
+                <hr class="my-8">
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-md-12 col-12 text-center">
+                        <div class="mb-8">
+                            <span class="text-info mb-3 d-block text-uppercase fw-semibold ls-xl">
+                                DENEYİM PAYLAŞIMLARI
+                            </span>
+
+                            <h2 class="mb-2 display-4 fw-bold">
+                                Gerçek yorumlar, gerçek yollar
+                            </h2>
+
+                            <p class="lead mb-0">
+                                Rotaya’da insanlar sadece ne öğrendiğini değil,
+                                bu öğrenmenin hayatına nasıl dokunduğunu anlatır.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-8">
+                    {% for review in course_reviews %}
+                        <div class="col-lg-4 col-md-6 col-12 mb-4">
+                            <div class="card border shadow-sm h-100 rounded-4">
+                                <div class="card-body p-5 d-flex flex-column">
+
+                                    <!-- Stars -->
+                                    <div class="mb-3">
+                                        <span class="fs-5 text-warning">
+                                            {% for i in "12345" %}
+                                                {% if forloop.counter <= review.rating %}
+                                                    ★
+                                                {% else %}
+                                                    ☆
+                                                {% endif %}
+                                            {% endfor %}
+                                        </span>
+                                    </div>
+
+                                    <!-- Comment -->
+                                    <p class="lead text-dark fw-medium mb-4 flex-grow-1">
+                                        "{{ review.comment|truncatewords:32 }}"
+                                    </p>
+
+                                    <!-- User -->
+                                    <div class="pt-3 border-top">
+                                        <h5 class="mb-1 fw-bold">
+                                            {{ review.customer.user.first_name }}
+                                            {{ review.customer.user.last_name }}
+                                        </h5>
+
+                                        <span class="small text-muted">
+                                            Rotaya Üyesi
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    {% empty %}
+                        <div class="col-12">
+                            <div class="alert alert-light border rounded-3">
+                                Henüz onaylanmış yorum bulunmuyor.
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+
+            <!-- call to action -->
+            <section class="py-8 bg-gray-200" style="background: url('{% static "assets/images/background/course-graphics.svg" %}') no-repeat; background-size: cover; background-position: top center">
+                <div class="container my-lg-8">
+                    <!-- row -->
+                    <div class="row justify-content-center text-center">
+                        <div class="col-md-9 col-12">
+                            <!-- heading -->
+                            <h2 class="display-4">İlk yılında 850’den fazla üyeye ulaşan platform topluluğuna siz de katılın</h2>
+                            <p class="lead px-lg-8 mb-6">
+                                Rotaya’da gerçek deneyimler, yaşanmış hikayeler ve yolunu bulmak isteyenlere özel içerikler seni bekliyor.
+                            </p>
+                            <!-- button -->
+                            <div class="d-grid d-md-block">
+                              {% if user.is_authenticated and user.customer_profile.has_paid and user.customer_profile.is_active_member %}
+                                  <a href="{% url 'courses' %}" class="btn btn-info mb-2 mb-md-0">
+                                      İçeriklere Git
+                                  </a>
+                              {% else %}
+                                  <a href="#" class="btn btn-info mb-2 mb-md-0 open-pricing">
+                                      Hemen Katıl
+                                  </a>
+                              {% endif %}
+
+                                <a href="#" class="btn btn-info open-login">
+                                    Rotaya’yı Keşfet
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+{% endblock %}

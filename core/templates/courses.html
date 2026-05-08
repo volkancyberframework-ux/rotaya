@@ -1,0 +1,454 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<main>
+
+  <!-- Hero Section -->
+  <section class="py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex flex-column gap-5">
+
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'home' %}"
+                     class="d-inline-flex align-items-center gap-1 text-info text-decoration-none">
+                    <i class="bi bi-house-door"></i>
+                    <span>Ana Sayfa</span>
+                  </a>
+                </li>
+
+                <li class="breadcrumb-item">
+                  <a href="{% url 'courses' %}"
+                     class="d-inline-flex align-items-center gap-1 text-info text-decoration-none">
+                    <i class="bi bi-collection-play"></i>
+                    <span>İçerikler</span>
+                  </a>
+                </li>
+
+                {% if selected_category %}
+                  <li class="breadcrumb-item active" aria-current="page">
+                    {{ selected_category.name }}
+                  </li>
+                {% elif selected_subcategory %}
+                  <li class="breadcrumb-item active" aria-current="page">
+                    {{ selected_subcategory.name }}
+                  </li>
+                {% else %}
+                  <li class="breadcrumb-item active" aria-current="page">
+                    Tüm İçerikler
+                  </li>
+                {% endif %}
+              </ol>
+            </nav>
+
+            <div class="d-flex flex-column">
+              <h1 class="mb-0">
+                {% if selected_subcategory %}
+                  {{ selected_subcategory.name }}
+                {% elif selected_category %}
+                  {{ selected_category.name }}
+                {% else %}
+                  Tüm İçerikler
+                {% endif %}
+              </h1>
+
+              <p class="mb-0">
+                Rotaya’da gerçek deneyimlerden hazırlanmış kursları ve içerikleri keşfet.
+              </p>
+
+              <div class="mb-4">
+                {% if q %}
+                  <h3>
+                    "{{ q }}" için sonuçlar
+                  </h3>
+                  <p class="text-muted">
+                    {{ result_count }} kurs bulundu.
+                  </p>
+                {% else %}
+                  <h3>Tüm Kurslar</h3>
+                {% endif %}
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter + Courses -->
+  <section class="py-lg-5 pb-5">
+    <div class="container">
+      <div class="row">
+
+        <!-- Sidebar -->
+        <div class="col-xxl-3 col-lg-4 col-12">
+          <div class="d-flex flex-column">
+
+            <div class="d-flex flex-row align-items-center justify-content-between mt-2 mb-3">
+              <div class="d-flex flex-row gap-2 align-items-center">
+
+                  <a class="text-inherit d-none d-lg-flex gap-2" href="{% url 'courses' %}">
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sliders text-dark" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1z" />
+                    </svg>
+                  </span>
+                  <span class="fw-semibold text-dark">Filtreler</span>
+                </a>
+
+                <a class="text-inherit d-lg-none d-flex flex-row gap-2" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sliders text-dark" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1z" />
+                    </svg>
+                  </span>
+                  <span class="fw-semibold text-dark">Filtreler</span>
+                </a>
+
+              </div>
+
+              <div>
+                <a href="{% url 'courses' %}" class="btn btn-light border btn-sm">
+                  Temizle
+                </a>
+              </div>
+            </div>
+
+            <div class="offcanvas offcanvas-start offcanvas-collapse" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+              <div class="offcanvas-header d-lg-none">
+                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Filtreler</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+
+              <div class="offcanvas-body pt-0 p-lg-0">
+                <div class="d-flex flex-column gap-3">
+
+                  <!-- Categories -->
+                  <div class="card">
+                    <div class="card-body p-3">
+                      <a class="d-flex align-items-center h4 mb-0 justify-content-between"
+                         data-bs-toggle="collapse"
+                         href="#courseCategories"
+                         role="button"
+                         aria-expanded="true"
+                         aria-controls="courseCategories">
+                        <div>Kategoriler</div>
+                        <span class="chevron-arrow ms-4">
+                          <i class="fe fe-chevron-down fs-4"></i>
+                        </span>
+                      </a>
+
+                      <div class="collapse show" id="courseCategories">
+                        <ul class="list-unstyled mb-1 d-flex flex-column gap-1 mt-3">
+
+                          <li>
+                            <a href="{% url 'courses' %}" class="text-secondary {% if not selected_category and not selected_subcategory %}fw-semibold text-info{% endif %}">
+                              Tüm İçerikler
+                            </a>
+                          </li>
+
+                          {% for category in categories %}
+                            <li>
+                              <a href="{% url 'courses' %}?category={{ category.slug }}"
+                                 class="text-secondary {% if selected_category and selected_category.slug == category.slug %}fw-semibold text-info{% endif %}">
+                                {{ category.name }}
+                              </a>
+                            </li>
+                          {% empty %}
+                            <li class="text-muted">Henüz kategori yok.</li>
+                          {% endfor %}
+
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Sub Categories -->
+                  <div class="card">
+                    <div class="card-body p-3">
+                      <a class="d-flex align-items-center h4 mb-0 justify-content-between"
+                         data-bs-toggle="collapse"
+                         href="#courseSubCategories"
+                         role="button"
+                         aria-expanded="true"
+                         aria-controls="courseSubCategories">
+                        <div>Alt Kategoriler</div>
+                        <span class="chevron-arrow ms-4">
+                          <i class="fe fe-chevron-down fs-4"></i>
+                        </span>
+                      </a>
+
+                      <div class="collapse show" id="courseSubCategories">
+                        <ul class="list-unstyled mb-1 d-flex flex-column gap-1 mt-3">
+
+                          {% for subcategory in subcategories %}
+                            <li>
+                              <a href="{% url 'courses' %}?subcategory={{ subcategory.slug }}"
+                                 class="text-secondary {% if selected_subcategory and selected_subcategory.slug == subcategory.slug %}fw-semibold text-info{% endif %}">
+                                {{ subcategory.name }}
+                              </a>
+                            </li>
+                          {% empty %}
+                            <li class="text-muted">Henüz alt kategori yok.</li>
+                          {% endfor %}
+
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Skill Level -->
+                  <div class="card">
+                    <div class="card-body p-3">
+                      <a class="d-flex align-items-center h4 mb-0 justify-content-between"
+                         data-bs-toggle="collapse"
+                         href="#courseLevel"
+                         role="button"
+                         aria-expanded="true"
+                         aria-controls="courseLevel">
+                        <div>Seviye</div>
+                        <span class="chevron-arrow ms-4">
+                          <i class="fe fe-chevron-down fs-4"></i>
+                        </span>
+                      </a>
+
+                      <div class="collapse show" id="courseLevel">
+                        <ul class="list-unstyled mb-0 d-flex flex-column gap-1 mt-3">
+
+                          <li>
+                            <a href="{% url 'courses' %}" class="text-secondary">
+                              Tüm Seviyeler
+                            </a>
+                          </li>
+
+                          <li>
+                            <a href="{% url 'courses' %}?level=beginner" class="text-secondary">
+                              Başlangıç
+                            </a>
+                          </li>
+
+                          <li>
+                            <a href="{% url 'courses' %}?level=intermediate" class="text-secondary">
+                              Orta
+                            </a>
+                          </li>
+
+                          <li>
+                            <a href="{% url 'courses' %}?level=advanced" class="text-secondary">
+                              İleri
+                            </a>
+                          </li>
+
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Rating -->
+                  <div class="card">
+                    <div class="card-body p-3">
+                      <a class="d-flex align-items-center h4 mb-0 justify-content-between"
+                         data-bs-toggle="collapse"
+                         href="#courseRating"
+                         role="button"
+                         aria-expanded="true"
+                         aria-controls="courseRating">
+                        <div>Puan</div>
+                        <span class="chevron-arrow ms-4">
+                          <i class="fe fe-chevron-down fs-4"></i>
+                        </span>
+                      </a>
+
+                      <div class="collapse show" id="courseRating">
+                        <ul class="list-unstyled mb-0 d-flex flex-column gap-1 mt-3">
+                          <li>
+                            <a href="{% url 'courses' %}?rating=4.5" class="text-secondary">
+                              ⭐ 4.5 ve üzeri
+                            </a>
+                          </li>
+                          <li>
+                            <a href="{% url 'courses' %}?rating=4.0" class="text-secondary">
+                              ⭐ 4.0 ve üzeri
+                            </a>
+                          </li>
+                          <li>
+                            <a href="{% url 'courses' %}?rating=3.5" class="text-secondary">
+                              ⭐ 3.5 ve üzeri
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Course Grid -->
+        <div class="col-xxl-9 col-lg-8 col-12">
+          <div class="d-flex flex-column gap-3">
+
+            <div class="d-flex flex-row align-items-center justify-content-between">
+              <span class="fw-semibold text-dark">
+                {{ courses|length }} sonuç
+              </span>
+
+              <div class="col-xl-3 col-md-4 col-6">
+                <form method="get">
+                  {% if selected_category %}
+                    <input type="hidden" name="category" value="{{ selected_category.slug }}">
+                  {% endif %}
+
+                  {% if selected_subcategory %}
+                    <input type="hidden" name="subcategory" value="{{ selected_subcategory.slug }}">
+                  {% endif %}
+
+                  <label for="sort" class="visually-hidden">Sıralama</label>
+                  <select id="sort" name="sort" class="form-select" onchange="this.form.submit()">
+                    <option value="">Sıralama</option>
+                    <option value="newest" {% if request.GET.sort == "newest" %}selected{% endif %}>En Yeni</option>
+                    <option value="popular" {% if request.GET.sort == "popular" %}selected{% endif %}>En Popüler</option>
+                    <option value="rating" {% if request.GET.sort == "rating" %}selected{% endif %}>En Yüksek Puan</option>
+                  </select>
+                </form>
+              </div>
+            </div>
+
+            <div class="row gy-4">
+
+              {% for course in courses %}
+                <div class="col-xl-4 col-md-6 col-12">
+                  <div class="card card-lift h-100">
+
+                    {% if user.is_authenticated and user.customer_profile.has_paid and user.customer_profile.is_active_member %}
+                      <a href="{% url 'course_detail' course.slug %}" class="text-inherit">
+                    {% else %}
+                      <a href="#" class="text-inherit open-paid-required">
+                    {% endif %}
+                        {% if course.thumbnail %}
+                          <img src="{{ course.thumbnail.url }}" class="card-img-top course-img" />
+                        {% else %}
+                          <img src="{% static 'assets/images/course/course-react.jpg' %}" alt="{{ course.title }}" class="card-img-top img-fluid w-100" />
+                        {% endif %}
+                      </a>
+
+                    <div class="card-body d-flex flex-column gap-4">
+
+                      <div class="d-flex flex-column gap-2">
+
+                        <div>
+                          {% if course.category %}
+                            <span class="badge text-light-emphasis bg-light-subtle border border-light-subtle rounded-pill">
+                              {{ course.category.name }}
+                            </span>
+                          {% else %}
+                            <span class="badge text-light-emphasis bg-light-subtle border border-light-subtle rounded-pill">
+                              Rotaya
+                            </span>
+                          {% endif %}
+                        </div>
+
+                        <h3 class="mb-0 h4">
+                          {% if user.is_authenticated and user.customer_profile.has_paid and user.customer_profile.is_active_member %}
+                            <a href="{% url 'course_detail' course.slug %}" class="text-inherit">
+                          {% else %}
+                            <a href="#" class="text-inherit open-paid-required">
+                          {% endif %}
+                              {{ course.title }}
+                            </a>
+                        </h3>
+
+                        <small class="text-secondary">
+                          {% if user.is_authenticated and user.customer_profile.has_paid and user.customer_profile.is_active_member %}
+
+                              {% if course.mentor %}
+                                {{ course.mentor.full_name }}
+                              {% else %}
+                                Rotaya Mentörü
+                              {% endif %}
+
+                          {% else %}
+
+                          {% if course.mentor %}
+                            {{ course.mentor.first_name|slice:":1" }}**** {{ course.mentor.last_name|slice:":1" }}****
+                          {% else %}
+                            Gizli Mentor
+                          {% endif %}
+
+                          {% endif %}
+                        </small>
+
+                        <div class="lh-1">
+                          <span class="text-secondary fw-semibold">{{ course.rating }}</span>
+
+                          <span class="align-text-top">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-star-fill text-warning" viewBox="0 0 16 16">
+                              <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-star-fill text-warning" viewBox="0 0 16 16">
+                              <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-star-fill text-warning" viewBox="0 0 16 16">
+                              <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-star-fill text-warning" viewBox="0 0 16 16">
+                              <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-star-fill text-warning" viewBox="0 0 16 16">
+                              <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                            </svg>
+                          </span>
+
+                          <span class="text-gray-500">({{ course.rating_count }})</span>
+                        </div>
+
+                        <div class="d-flex flex-row gap-2 align-items-center text-secondary small">
+                          <span>{{ course.duration_label }}</span>
+                          <span>•</span>
+                          <span>{{ course.get_level_display }}</span>
+                          <span>•</span>
+                          <span>{{ course.content_count }} içerik</span>
+                        </div>
+
+                      </div>
+
+                      <div class="d-flex flex-row gap-2 align-items-center mt-auto">
+                        <span class="fw-semibold text-dark">
+                          Üyelikle erişilebilir
+                        </span>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              {% empty %}
+                <div class="col-12">
+                  <div class="alert alert-light border">
+                    Bu aramaya veya filtreye uygun yayınlanmış içerik bulunamadı.
+                  </div>
+                </div>
+              {% endfor %}
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+{% endblock %}

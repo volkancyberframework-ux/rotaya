@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+.mentor-img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  object-position: center top;
+}
+</style>
+
+<section class="py-6 py-lg-8 bg-light">
+  <div class="container py-lg-6">
+
+    <div class="row">
+      <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
+        <div class="text-center mb-6 d-flex flex-column gap-2">
+          <h2 class="mb-0 mx-xl-8 h1">
+            Gerçek deneyim sahipleri bir tık uzağında
+          </h2>
+          <p class="mb-0">
+            Kariyer, yurtdışı, girişimcilik ve hayat kararlarında sana yol gösterecek mentorleri keşfet.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+
+      <div class="col-12">
+        <div class="d-flex flex-md-row gap-2 flex-column justify-content-between">
+          <div class="d-grid d-md-flex">
+            {% if user.is_authenticated and user.customer_profile.has_paid and user.customer_profile.is_active_member %}
+              <a href="{% url 'mentor' %}" class="btn btn-info">
+                Tüm İçerik Üreticilerini Keşfet
+              </a>
+            {% else %}
+              <a href="#" class="btn btn-info open-pricing">
+                Tüm İçerik Üreticilerini Keşfet
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      {% for mentor in mentors %}
+        <div class="col-xxl-3 col-xl-4 col-md-6 col-12">
+          <div class="card rounded-4 card-bordered card-lift h-100">
+            <div class="p-3 d-flex flex-column gap-3">
+
+              <div class="position-relative">
+                {% if user.is_authenticated and user.customer_profile.has_paid and user.customer_profile.is_active_member %}
+                  <a href="#" data-bs-toggle="modal" data-bs-target="#mentorBioModal{{ mentor.id }}">
+                {% else %}
+                  <a href="#" class="open-pricing">
+                {% endif %}
+
+                  {% if mentor.use_anonymous_photo %}
+                    <img
+                      src="{% static mentor.anonymous_photo %}"
+                      alt="Anonim Mentor"
+                      class="mentor-img w-100 rounded-4">
+                  {% elif mentor.photo %}
+                    <img
+                      src="{{ mentor.photo.url }}"
+                      alt="{{ mentor.full_name }}"
+                      class="mentor-img w-100 rounded-4">
+                  {% else %}
+                    <img
+                      src="{% static 'assets/images/mentor/mentor-img-1.jpg' %}"
+                      alt="Mentor"
+                      class="mentor-img w-100 rounded-4">
+                  {% endif %}
+
+                </a>
+
+                {% if mentor.is_quick_responder %}
+                  <div class="position-absolute bottom-0 left-0 p-3">
+                    <span class="badge text-bg-success">Hızlı Dönüş</span>
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="d-flex flex-column gap-4">
+
+                <div class="d-flex flex-column gap-2">
+                  <div>
+                    <div class="d-flex align-items-center gap-2">
+                      <h3 class="mb-0">
+                        {% if user.is_authenticated and user.customer_profile.has_paid and user.customer_profile.is_active_member %}
+                          <a href="#"
+                             class="text-reset"
+                             data-bs-toggle="modal"
+                             data-bs-target="#mentorBioModal{{ mentor.id }}">
+                            {{ mentor.full_name }}
+                          </a>
+                        {% else %}
+                          <a href="#" class="text-reset open-pricing">
+                            xxxx xxxx
+                          </a>
+                        {% endif %}
+                      </h3>
+
+                      <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                          class="bi bi-patch-check-fill text-success" viewBox="0 0 16 16">
+                          <path
+                            d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708" />
+                        </svg>
+                      </span>
+                    </div>
+
+                    <span class="text-gray-800">
+                      {{ mentor.title|default:"Rotaya Mentörü" }}
+                    </span>
+                  </div>
+
+                  <div class="d-flex align-items-center justify-content-between fs-6">
+                    <div>
+                      {% if mentor.company %}
+                        <span>@ {{ mentor.company }}</span>
+                      {% else %}
+                        <span>@ Rotaya</span>
+                      {% endif %}
+
+                      <div class="vr mx-2 text-gray-200"></div>
+
+                      {% if mentor.location %}
+                        <span>{{ mentor.location }}</span>
+                      {% else %}
+                        <span>Online</span>
+                      {% endif %}
+                    </div>
+
+                    <div class="d-flex gap-1 align-items-center lh-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                        class="bi bi-star-fill text-warning" viewBox="0 0 16 16">
+                        <path
+                          d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                      </svg>
+
+                      <span class="fw-bold text-dark">{{ mentor.rating }}</span>
+                      <span>({{ mentor.review_count }} yorum)</span>
+                    </div>
+                  </div>
+
+                  {% if mentor.skills %}
+                    <div class="small text-secondary">
+                      {{ mentor.skills|truncatechars:70 }}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="d-flex flex-row justify-content-between align-items-center mt-auto">
+                  <div>
+                    <span>İçerik sayısı</span>
+                    <div class="d-flex flex-row gap-1 align-items-center">
+                      <h4 class="mb-0">{{ mentor.courses.count }}</h4>
+                      <span class="fs-6">kurs</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    {% if user.is_authenticated and user.customer_profile.has_paid and user.customer_profile.is_active_member %}
+                      <a href="#"
+                         class="btn btn-outline-info"
+                         data-bs-toggle="modal"
+                         data-bs-target="#mentorBioModal{{ mentor.id }}">
+                        Profili Gör
+                      </a>
+                    {% else %}
+                      <a href="#" class="btn btn-outline-info open-pricing">
+                        Üye Ol ve Profili Gör
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        {% if user.is_authenticated and user.customer_profile.has_paid and user.customer_profile.is_active_member %}
+          <div class="modal fade" id="mentorBioModal{{ mentor.id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+              <div class="modal-content rounded-4 border-0 shadow-lg">
+
+                <div class="modal-header border-0 px-5 pt-5">
+                  <div>
+                    <h3 class="fw-bold mb-1">{{ mentor.full_name }}</h3>
+                    <p class="text-muted mb-0">
+                      {{ mentor.title|default:"Rotaya Mentörü" }}
+                      {% if mentor.company %} · {{ mentor.company }}{% endif %}
+                    </p>
+                  </div>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body px-5 pb-5">
+
+                  <div class="row g-4 align-items-start">
+                    <div class="col-md-4">
+                      {% if mentor.use_anonymous_photo %}
+                        <img src="{% static mentor.anonymous_photo %}"
+                             alt="Anonim Mentor"
+                             class="img-fluid rounded-4 w-100"
+                             style="height: 260px; object-fit: cover; object-position: center top;">
+                      {% elif mentor.photo %}
+                        <img src="{{ mentor.photo.url }}"
+                             alt="{{ mentor.full_name }}"
+                             class="img-fluid rounded-4 w-100"
+                             style="height: 260px; object-fit: cover; object-position: center top;">
+                      {% else %}
+                        <img src="{% static 'assets/images/mentor/mentor-img-1.jpg' %}"
+                             alt="Mentor"
+                             class="img-fluid rounded-4 w-100"
+                             style="height: 260px; object-fit: cover; object-position: center top;">
+                      {% endif %}
+                    </div>
+
+                    <div class="col-md-8">
+                      <h5 class="fw-bold mb-3">Bio</h5>
+
+                      <div class="fs-5 lh-lg text-dark">
+                        {{ mentor.bio|default:"Bu mentor henüz bio bilgisi eklemedi."|linebreaks }}
+                      </div>
+
+                      {% if mentor.skills %}
+                        <hr>
+                        <p class="mb-0">
+                          <strong>Uzmanlıklar:</strong> {{ mentor.skills }}
+                        </p>
+                      {% endif %}
+
+                      {% if mentor.location %}
+                        <p class="mb-0 mt-3">
+                          <strong>Lokasyon:</strong> {{ mentor.location }}
+                        </p>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+      {% empty %}
+        <div class="col-12">
+          <div class="alert alert-light border">
+            Aradığın kritere uygun içerik üretici bulunamadı.
+          </div>
+        </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+
+<!-- Mentor Privacy Popup -->
+<div class="modal fade" id="mentorPrivacyModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+
+      <div class="modal-body p-5 text-center">
+
+        <div class="mb-4">
+          <div class="bg-light-info text-info rounded-circle d-inline-flex align-items-center justify-content-center"
+               style="width: 72px; height: 72px; font-size: 30px;">
+            🔒
+          </div>
+        </div>
+
+        <h3 class="fw-bold mb-3">
+          Bazı içerik üreticileri gizli profili tercih ediyor
+        </h3>
+
+        <p class="text-muted fs-5 mb-4">
+          Bazı içerik üreticilerimiz genel sayfalarda görünmemeyi tercih etmektedir.
+          Tüm içerik üreticilerini görüntülemek için en az
+          <strong>Rotaya Basic</strong> üyeliğine sahip olmalısın.
+        </p>
+
+        <div class="d-grid gap-2">
+
+          <a href="#"
+             class="btn btn-info btn-lg rounded-pill open-pricing"
+             data-bs-dismiss="modal">
+            Rotaya Basic’i Keşfet
+          </a>
+
+          <button type="button"
+                  class="btn btn-light rounded-pill"
+                  data-bs-dismiss="modal">
+            Daha Sonra
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const isPaidUser =
+        {% if user.is_authenticated and user.customer_profile.has_paid and user.customer_profile.is_active_member %}
+            true
+        {% else %}
+            false
+        {% endif %};
+
+    if (!isPaidUser) {
+
+        if (!localStorage.getItem("mentorPrivacyPopupShown")) {
+
+            const mentorPopup = new bootstrap.Modal(
+                document.getElementById("mentorPrivacyModal")
+            );
+
+            mentorPopup.show();
+
+            localStorage.setItem("mentorPrivacyPopupShown", "true");
+        }
+    }
+
+});
+</script>
+
+{% endblock %}

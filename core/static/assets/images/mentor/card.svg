@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="259" height="158" viewBox="0 0 259 158" xmlns="http://www.w3.org/2000/svg">
+  <rect width="259" height="158" fill="none"/>
+
+  <rect x="39" y="28" width="181" height="96" rx="18" fill="#ffffff"/>
+
+  <circle cx="82" cy="76" r="30" fill="#E2E8F0"/>
+  <circle cx="82" cy="66" r="9" fill="#CBD5E1"/>
+  <path d="M63 96c2.5-12 10.5-18 19-18s16.5 6 19 18" fill="#CBD5E1"/>
+
+  <rect x="124" y="48" width="76" height="9" rx="4.5" fill="#CBD5E1"/>
+  <rect x="124" y="66" width="56" height="9" rx="4.5" fill="#E2E8F0"/>
+
+  <rect x="124" y="87" width="24" height="17" rx="5" fill="#FF0000"/>
+  <polygon points="133,91 141,95.5 133,100" fill="#ffffff"/>
+
+  <text x="156" y="100" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#38A169">20.000+</text>
+  <text x="156" y="115" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" fill="#38A169">Abone</text>
+</svg>
