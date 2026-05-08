@@ -65,18 +65,19 @@
             background-color: rgba(13, 202, 240, 0.08) !important;
         }
 
-        /* TOGGLER ICON COLOR */
         .navbar-toggler {
             border-color: var(--bs-info) !important;
+            padding: 0.45rem 0.7rem;
         }
 
         .navbar-toggler .icon-bar {
-            display: block;
+            display: block !important;
             width: 22px;
             height: 2px;
-            margin: 4px auto;
+            margin: 4px 0;
+            border-radius: 10px;
             background-color: var(--bs-info) !important;
-            transition: all 0.2s;
+            opacity: 1 !important;
         }
 
         </style>
@@ -106,8 +107,8 @@
                   <a href="#" class="btn btn-outline-info me-2 open-login">
                     Giriş Yap
                   </a>
-                  <a href="#" class="btn btn-info open-signup">
-                    Kayıt Ol
+                  <a href="#" class="btn btn-info me-2 open-signup">
+                      Kayıt Ol
                   </a>
                 {% endif %}
               </div>
