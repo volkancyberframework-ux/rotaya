@@ -75,3 +75,39 @@ def track_successful_admin_login(sender, request, user, **kwargs):
         ip_address=ip_address,
         is_successful=True,
     )
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .models import BankTransferOrder, Customer
+from .utils import send_telegram_message
+
+
+@receiver(post_save, sender=BankTransferOrder)
+def notify_bank_transfer_order(sender, instance, created, **kwargs):
+    if created:
+        send_telegram_message(
+            f"""
+💸 Yeni Bank Transfer Order
+
+📧 Email: {instance.email}
+📦 Plan: {instance.plan}
+💰 Tutar: {instance.discounted_price}
+🔑 Kod: {instance.payment_code}
+"""
+        )
+
+
+@receiver(post_save, sender=Customer)
+def notify_new_customer(sender, instance, created, **kwargs):
+    if created:
+        user = instance.user
+        send_telegram_message(
+            f"""
+🎉 Yeni Kullanıcı Kaydı
+
+👤 Username: {user.username}
+📧 Email: {user.email}
+💳 Paid: {instance.has_paid}
+✅ Active: {instance.is_active_member}
+"""
+        )
