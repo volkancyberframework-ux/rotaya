@@ -202,14 +202,16 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 # MEDIA FILES
 # Render Disk path
 # =========================
+# =========================
+# MEDIA FILES
+# =========================
 
 MEDIA_URL = "/media/"
 
-if os.environ.get("RENDER") == "true":
-    MEDIA_ROOT = Path("/var/data/media")
+if os.environ.get("RENDER"):
+    MEDIA_ROOT = "/var/data/media"
 else:
     MEDIA_ROOT = BASE_DIR / "media"
-
 
 # =========================
 # SECURITY - PRODUCTION
