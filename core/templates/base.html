@@ -98,26 +98,18 @@
           >
 
             <div class="mb-3" style="font-size: 52px;">
-              {% if message.tags == 'success' %}
-                ✅
-              {% elif message.tags == 'error' %}
-                🚨
-              {% elif message.tags == 'warning' %}
-                ⚠️
-              {% else %}
-                ℹ️
+              {% if message.tags == 'success' %}✅
+              {% elif message.tags == 'error' %}🚨
+              {% elif message.tags == 'warning' %}⚠️
+              {% else %}ℹ️
               {% endif %}
             </div>
 
             <div class="fw-bold fs-4 mb-2">
-              {% if message.tags == 'success' %}
-                Başarılı
-              {% elif message.tags == 'error' %}
-                Hata Oluştu
-              {% elif message.tags == 'warning' %}
-                Uyarı
-              {% else %}
-                Bilgilendirme
+              {% if message.tags == 'success' %}Başarılı
+              {% elif message.tags == 'error' %}Hata Oluştu
+              {% elif message.tags == 'warning' %}Uyarı
+              {% else %}Bilgilendirme
               {% endif %}
             </div>
 
@@ -125,17 +117,15 @@
               {{ message }}
             </div>
 
-            {% if message.tags != 'error' %}
             <div class="mt-4">
               <button
                 type="button"
-                class="btn btn-outline-dark"
+                class="btn btn-dark px-4"
                 data-bs-dismiss="alert"
               >
                 Kapat
               </button>
             </div>
-            {% endif %}
 
           </div>
         {% endfor %}
