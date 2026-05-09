@@ -80,6 +80,43 @@
 </head>
 
     <body class="bg-white">
+
+      {% if messages %}
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 99999; max-width: 420px;">
+          {% for message in messages %}
+            <div
+              class="alert
+                {% if message.tags == 'success' %}alert-success
+                {% elif message.tags == 'error' %}alert-danger
+                {% elif message.tags == 'warning' %}alert-warning
+                {% else %}alert-info{% endif %}
+                alert-dismissible fade show shadow-lg rounded-4 mb-3"
+              role="alert">
+
+              <div class="d-flex align-items-start">
+                <div class="me-2 fs-4">
+                  {% if message.tags == 'success' %}
+                    ✅
+                  {% elif message.tags == 'error' %}
+                    🚨
+                  {% elif message.tags == 'warning' %}
+                    ⚠️
+                  {% else %}
+                    ℹ️
+                  {% endif %}
+                </div>
+
+                <div class="small fw-semibold">
+                  {{ message }}
+                </div>
+              </div>
+
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg">
           <div class="container-fluid px-0">
