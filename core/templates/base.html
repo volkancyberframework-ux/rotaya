@@ -48,36 +48,32 @@
         </style>
 
         <style>
+        @media (max-width: 991.98px) {
+            .navbar-toggler {
+                width: 52px !important;
+                height: 52px !important;
+                min-width: 52px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                border: 1.5px solid #7b8aa0 !important;
+                border-radius: 12px !important;
+                background-color: #ffffff !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+            }
 
-        .navbar-toggler {
-            width: 52px;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1.5px solid #7b8aa0 !important;
-            border-radius: 12px;
-            background: #fff;
-            box-shadow: none !important;
-        }
+            .navbar-toggler::before {
+                content: "☰" !important;
+                font-size: 28px !important;
+                line-height: 1 !important;
+                color: #0dcaf0 !important;
+                font-weight: 700 !important;
+            }
 
-        .navbar-toggler:focus {
-            box-shadow: none !important;
-        }
-
-        .navbar-toggler-icon-custom {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .navbar-toggler-icon-custom span {
-            display: block;
-            width: 22px;
-            height: 2.5px;
-            background-color: var(--bs-info);
-            border-radius: 10px;
+            .navbar-toggler-icon-custom {
+                display: none !important;
+            }
         }
         </style>
 
