@@ -293,34 +293,51 @@
                   </div>
 
                   {% for review in reviews %}
-                    <div class="d-flex align-items-start border-bottom pb-4 mb-4">
-                      <img src="{% static 'assets/images/avatar/avatar-2.jpg' %}" alt="" class="rounded-circle avatar-lg" />
+                  <div class="d-flex align-items-start border-bottom pb-4 mb-4">
 
-                      <div class="ms-3">
-                        <h4 class="mb-1">
-                          {{ review.customer.user.first_name|default:review.customer.user.username }}
-                          <span class="ms-1 fs-6">{{ review.created_at|date:"d M Y" }}</span>
-                        </h4>
+                    <!-- Avatar -->
+                    <div
+                      class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold fs-3"
+                      style="
+                        width: 56px;
+                        height: 56px;
+                        min-width: 56px;
+                        background-color: #0dcaf0;
+                      "
+                    >
+                      {{ review.customer.user.first_name|slice:":1" }}
+                    </div>
 
-                        <div class="mb-2">
-                          <span class="text-warning">
-                            {% for i in "12345" %}
-                              {% if forloop.counter <= review.rating %}
-                                ★
-                              {% else %}
-                                ☆
-                              {% endif %}
-                            {% endfor %}
-                          </span>
-                        </div>
+                    <div class="ms-3">
+                      <h4 class="mb-1">
+                        {{ review.customer.user.first_name }}
+                        {{ review.customer.user.last_name }}
 
-                        <p class="mb-0">{{ review.comment }}</p>
+                        <span class="ms-1 fs-6 text-muted">
+                          {{ review.created_at|date:"d M Y" }}
+                        </span>
+                      </h4>
+
+                      <div class="mb-2">
+                        <span class="text-warning">
+                          {% for i in "12345" %}
+                            {% if forloop.counter <= review.rating %}
+                              ★
+                            {% else %}
+                              ☆
+                            {% endif %}
+                          {% endfor %}
+                        </span>
                       </div>
+
+                      <p class="mb-0">{{ review.comment }}</p>
                     </div>
+                  </div>
+
                   {% empty %}
-                    <div class="alert alert-light border mb-0">
-                      Bu kurs için henüz yorum yapılmamış.
-                    </div>
+                  <div class="alert alert-light border mb-0">
+                    Bu kurs için henüz yorum yapılmamış.
+                  </div>
                   {% endfor %}
                 </div>
 
