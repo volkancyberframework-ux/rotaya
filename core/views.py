@@ -31,6 +31,7 @@ from .models import (
     BlockedIP,
     LockedUser,
 )
+from core.utils import send_telegram_message
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
@@ -71,6 +72,17 @@ def create_bank_transfer_order(request):
         plan=plan,
         original_price=original_price,
         discounted_price=discounted_price
+    )
+
+    send_telegram_message(
+        f"""
+    💸 Yeni Bank Transfer Order
+
+    📧 Email: {order.email}
+    📦 Plan: {order.plan}
+    💰 Tutar: {order.discounted_price}
+    🔑 Kod: {order.payment_code}
+    """
     )
 
     return JsonResponse({
@@ -423,6 +435,16 @@ def signup(request):
             is_active_member=True,
             membership_started_at=timezone.now(),
             registration_code=registration_code,
+        )
+
+        send_telegram_message(
+        f"""
+        🎉 Yeni Kullanıcı Kaydı
+
+        👤 Username: {username}
+        📧 Email: {email}
+        🌍 IP: {ip}
+        """
         )
 
         RegistrationAttempt.objects.create(ip_address=ip, is_successful=True)
