@@ -82,40 +82,65 @@
     <body class="bg-white">
 
       {% if messages %}
-        <div class="position-fixed top-0 end-0 p-3" style="z-index: 99999; max-width: 420px;">
-          {% for message in messages %}
-            <div
-              class="alert
-                {% if message.tags == 'success' %}alert-success
-                {% elif message.tags == 'error' %}alert-danger
-                {% elif message.tags == 'warning' %}alert-warning
-                {% else %}alert-info{% endif %}
-                alert-dismissible fade show shadow-lg rounded-4 mb-3"
-              role="alert">
+      <div
+        class="position-fixed top-50 start-50 translate-middle"
+        style="z-index: 99999; width: 100%; max-width: 520px; padding: 20px;"
+      >
+        {% for message in messages %}
+          <div
+            class="alert
+              {% if message.tags == 'success' %}alert-success
+              {% elif message.tags == 'error' %}alert-danger
+              {% elif message.tags == 'warning' %}alert-warning
+              {% else %}alert-info{% endif %}
+              shadow-lg rounded-4 border-0 p-4 text-center"
+            role="alert"
+          >
 
-              <div class="d-flex align-items-start">
-                <div class="me-2 fs-4">
-                  {% if message.tags == 'success' %}
-                    ✅
-                  {% elif message.tags == 'error' %}
-                    🚨
-                  {% elif message.tags == 'warning' %}
-                    ⚠️
-                  {% else %}
-                    ℹ️
-                  {% endif %}
-                </div>
-
-                <div class="small fw-semibold">
-                  {{ message }}
-                </div>
-              </div>
-
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+            <div class="mb-3" style="font-size: 52px;">
+              {% if message.tags == 'success' %}
+                ✅
+              {% elif message.tags == 'error' %}
+                🚨
+              {% elif message.tags == 'warning' %}
+                ⚠️
+              {% else %}
+                ℹ️
+              {% endif %}
             </div>
-          {% endfor %}
-        </div>
-        {% endif %}
+
+            <div class="fw-bold fs-4 mb-2">
+              {% if message.tags == 'success' %}
+                Başarılı
+              {% elif message.tags == 'error' %}
+                Hata Oluştu
+              {% elif message.tags == 'warning' %}
+                Uyarı
+              {% else %}
+                Bilgilendirme
+              {% endif %}
+            </div>
+
+            <div class="fs-5">
+              {{ message }}
+            </div>
+
+            {% if message.tags != 'error' %}
+            <div class="mt-4">
+              <button
+                type="button"
+                class="btn btn-outline-dark"
+                data-bs-dismiss="alert"
+              >
+                Kapat
+              </button>
+            </div>
+            {% endif %}
+
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
 
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg">
