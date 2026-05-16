@@ -57,20 +57,9 @@ admin.site.register(Customer)
 
 @admin.register(RegistrationCode)
 class RegistrationCodeAdmin(admin.ModelAdmin):
-    list_display = (
-        "code",
-        "valid_date",
-        "is_active",
-        "created_at",
-    )
-    list_filter = (
-        "valid_date",
-        "is_active",
-    )
-    search_fields = (
-        "code",
-    )
-
+    list_display = ("code", "valid_date", "last_day", "is_active", "created_at")
+    search_fields = ("code",)
+    list_filter = ("is_active", "valid_date", "last_day")
 
 # =========================
 # ÖDEME YÖNETİMİ

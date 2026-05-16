@@ -10,6 +10,8 @@ from django.db import models
 import random
 import string
 from django.db import models
+from django.utils import timezone
+from datetime import timedelta
 
 
 class PaymentSetting(models.Model):
@@ -58,13 +60,18 @@ class BankTransferOrder(models.Model):
 class RegistrationCode(models.Model):
     code = models.CharField(max_length=100, unique=True)
     valid_date = models.DateField()
+    last_day = models.DateField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"{self.code} - {self.valid_date}"
+    def save(self, *args, **kwargs):
+        if self.valid_date and not self.last_day:
+            self.last_day = self.valid_date + timedelta(days=365)
+        super().save(*args, **kwargs)
 
+    def __str__(self):
+        return f"{self.code} - {self.valid_date} / {self.last_day}"
 
 class Category(models.Model):
     name = models.CharField(max_length=120)

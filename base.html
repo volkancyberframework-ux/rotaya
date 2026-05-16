@@ -1,0 +1,1303 @@
+{% load static %}
+<!doctype html>
+<html lang="tr" data-bs-theme="light">
+    <head>
+        <!-- Required meta tags -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="author" content="Codescandy" />
+
+<!-- Favicon icon-->
+<link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/favicon/favicon.ico' %}" />
+
+
+<!-- Libs CSS -->
+<link href="{% static 'assets/fonts/feather/feather.css' %}" rel="stylesheet" />
+<link href="{% static 'assets/libs/bootstrap-icons/font/bootstrap-icons.min.css' %}" rel="stylesheet" />
+<link href="{% static 'assets/libs/simplebar/dist/simplebar.min.css' %}" rel="stylesheet" />
+
+<!-- Theme CSS -->
+<link rel="stylesheet" href="{% static 'assets/css/theme.min.css' %}">
+        <link rel="canonical" href="https://geeksui.codescandy.com/geeks/pages/landings/landing-courses.html">
+        <link href="{% static 'assets/libs/tiny-slider/dist/tiny-slider.css' %}" rel="stylesheet">
+        <title>Rotaya | Gerçek Deneyimlerden Öğren</title>
+
+        <style>
+            .filter-blur {
+                filter: blur(20px);
+            }
+        </style>
+
+
+        <style>
+        .course-img {
+          width: 100%;
+          height: 220px;
+          object-fit: cover;
+          object-position: center;
+        }
+        </style>
+
+        <style>
+        .mentor-img {
+          width: 100%;
+          height: 260px;
+          object-fit: cover;
+          object-position: center top;
+        }
+        </style>
+
+        <style>
+        @media (max-width: 991.98px) {
+            .navbar-toggler {
+                width: 52px !important;
+                height: 52px !important;
+                min-width: 52px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                border: 1.5px solid #7b8aa0 !important;
+                border-radius: 12px !important;
+                background-color: #ffffff !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+            }
+
+            .navbar-toggler::before {
+                content: "☰" !important;
+                font-size: 28px !important;
+                line-height: 1 !important;
+                color: #0dcaf0 !important;
+                font-weight: 700 !important;
+            }
+
+            .navbar-toggler-icon-custom {
+                display: none !important;
+            }
+        }
+        </style>
+
+</head>
+
+    <body class="bg-white">
+
+      {% if messages %}
+      <div
+        class="position-fixed top-50 start-50 translate-middle"
+        style="z-index: 99999; width: 100%; max-width: 520px; padding: 20px;"
+      >
+        {% for message in messages %}
+          <div
+            class="alert
+              {% if message.tags == 'success' %}alert-success
+              {% elif message.tags == 'error' %}alert-danger
+              {% elif message.tags == 'warning' %}alert-warning
+              {% else %}alert-info{% endif %}
+              shadow-lg rounded-4 border-0 p-4 text-center"
+            role="alert"
+          >
+
+            <div class="mb-3" style="font-size: 52px;">
+              {% if message.tags == 'success' %}✅
+              {% elif message.tags == 'error' %}🚨
+              {% elif message.tags == 'warning' %}⚠️
+              {% else %}ℹ️
+              {% endif %}
+            </div>
+
+            <div class="fw-bold fs-4 mb-2">
+              {% if message.tags == 'success' %}Başarılı
+              {% elif message.tags == 'error' %}Hata Oluştu
+              {% elif message.tags == 'warning' %}Uyarı
+              {% else %}Bilgilendirme
+              {% endif %}
+            </div>
+
+            <div class="fs-5">
+              {{ message }}
+            </div>
+
+            <div class="mt-4">
+              <button
+                type="button"
+                class="btn btn-dark px-4"
+                data-bs-dismiss="alert"
+              >
+                Kapat
+              </button>
+            </div>
+
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg">
+          <div class="container-fluid px-0">
+
+            <!-- Logo -->
+            <a class="navbar-brand" href="/">
+              <img src="{% static 'assets/images/brand/logo/logo.svg' %}" alt="Rotaya" />
+            </a>
+
+            <!-- Right Buttons -->
+            <div class="order-lg-3 d-flex align-items-center">
+              <div class="d-flex align-items-center">
+
+
+                {% if user.is_authenticated %}
+                  <a href="{% url 'logout' %}" class="btn btn-outline-danger">
+                    Çıkış Yap
+                  </a>
+                {% else %}
+                  <a href="#" class="btn btn-outline-info me-2 open-login">
+                    Giriş Yap
+                  </a>
+                  <a href="#" class="btn btn-info me-2 open-signup">
+                      Kayıt Ol
+                  </a>
+                {% endif %}
+              </div>
+
+              <button
+                class="navbar-toggler collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbar-default"
+                aria-controls="navbar-default"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+
+                  <div class="navbar-toggler-icon-custom">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                  </div>
+
+              </button>
+            </div>
+
+            <!-- Menu -->
+            <div class="collapse navbar-collapse" id="navbar-default">
+              <ul class="navbar-nav">
+
+                <!-- Kategoriler -->
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarCategories" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  🗂️ <span class="ms-1">Kategoriler</span>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarCategories" style="min-width: 720px;">
+
+                  <li>
+                    <a class="dropdown-item fw-semibold text-info" href="{% url 'courses' %}">
+                      Hepsini Listele
+                    </a>
+                  </li>
+
+                  <li><hr class="dropdown-divider"></li>
+
+                  <li class="px-3 py-2">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2">
+
+                      {% for category in navbar_categories %}
+                        <div class="col">
+                          <div class="mb-2">
+                            <a href="{% url 'courses' %}?category={{ category.slug }}"
+                               class="dropdown-item fw-semibold px-0">
+                              {{ category.name }}
+                            </a>
+
+                            {% for subcategory in category.subcategories.all|slice:":10" %}
+                              <a href="{% url 'courses' %}?subcategory={{ subcategory.slug }}"
+                                 class="dropdown-item small text-muted px-0 ps-3">
+                                {{ subcategory.name }}
+                              </a>
+                            {% endfor %}
+                          </div>
+                        </div>
+
+                        {% if forloop.counter|divisibleby:10 %}
+                          <div class="w-100"></div>
+                        {% endif %}
+                      {% empty %}
+                        <div class="col">
+                          <span class="dropdown-item text-muted">
+                            Henüz kategori yok.
+                          </span>
+                        </div>
+                      {% endfor %}
+
+                    </div>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'mentor' %}">
+                  🎙️ <span class="ms-1">İçerik Üreticileri</span>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'blog' %}">
+                  🧠 <span class="ms-1">Blog</span>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link open-pricing" href="#">
+                  💳 <span class="ms-1">Ücretler</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}#whoami">
+                  👋 <span class="ms-1">Hakkımızda</span>
+                </a>
+              </li>
+              </ul>
+
+              <form action="{% url 'courses' %}" method="get" class="d-flex">
+                <input
+                  class="form-control me-2"
+                  type="search"
+                  name="q"
+                  placeholder="mentor veya konu ara..."
+                  value="{{ q|default:'' }}"
+                >
+                <button class="btn btn-info" type="submit">
+                  Ara
+                </button>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+
+{% block content %}
+
+{% endblock %}
+
+<!-- footer -->
+<footer class="pt-lg-8 pt-5 footer bg-white">
+    <div class="container mt-lg-2">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="mb-4">
+                    <img src="{% static 'assets/images/brand/logo/logo.svg' %}" alt="Rotaya" class="logo-inverse" style="width: 185px; height: auto;" />
+
+                    <div class="mt-4">
+                        <p>Rotaya’da yolunu bulmuş insanlardan öğrenirsin. Yapay zekâdan yazılıma, kariyerden hayata kadar; teknolojide başarmış ve gerçek deneyimlerle öğrenmiş insanlardan ilham alır, kendi rotanı çizersin.</p>
+
+                        <div class="fs-4 mt-4">
+                          <a href="https://www.youtube.com/@volkangulernguyen"
+                             target="_blank"
+                             rel="noopener noreferrer"
+                             class="me-3 text-info"
+                             aria-label="YouTube"
+                             title="YouTube">
+                              <i class="bi bi-youtube"></i>
+                          </a>
+
+                          <a href="#"
+                             class="me-3 text-info"
+                             aria-label="Instagram"
+                             title="Yakında Gelecek">
+                              <i class="bi bi-instagram"></i>
+                          </a>
+
+                          <a href="#"
+                             class="me-3 text-info"
+                             aria-label="LinkedIn"
+                             title="Yakında Gelecek">
+                              <i class="bi bi-linkedin"></i>
+                          </a>
+
+                          <a href="#"
+                             class="text-info"
+                             aria-label="X"
+                             title="Yakında Gelecek">
+                              <i class="bi bi-twitter-x"></i>
+                          </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="offset-lg-1 col-lg-2 col-md-3 col-6">
+                <div class="mb-4">
+                    <h3 class="fw-bold mb-3">Rotaya</h3>
+                    <ul class="list-unstyled nav nav-footer flex-column nav-x-0">
+                        <li><a href="#whoami" class="nav-link">Hakkımızda</a></li>
+                        <li><a href="#discover" class="nav-link">Keşfet</a></li>
+                        <li><a href="{% url 'mentor' %}" class="nav-link">İçerik Üreticileri</a></li>
+                        <li><a href="#" class="nav-link open-pricing">Ücretler</a></li>
+                        <li><a href="mailto:support@rotaya.co" class="nav-link">İletişim</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-3 col-6">
+                <div class="mb-4">
+                    <h3 class="fw-bold mb-3">Kategoriler</h3>
+                    <ul class="list-unstyled nav nav-footer flex-column nav-x-0">
+                        {% for category in navbar_categories|slice:":4" %}
+                            <li>
+                                <a href="{% url 'courses' %}?category={{ category.slug }}" class="nav-link">
+                                    {{ category.name }}
+                                </a>
+                            </li>
+                        {% empty %}
+                            <li><a href="{% url 'courses' %}?category=kariyer" class="nav-link">Kariyer</a></li>
+                            <li><a href="{% url 'courses' %}?category=girisimcilik" class="nav-link">Girişimcilik</a></li>
+                            <li><a href="{% url 'courses' %}?category=yapay-zeka" class="nav-link">Yapay Zekâ</a></li>
+                            <li><a href="{% url 'courses' %}?category=finansal-ozgurluk" class="nav-link">Finansal Özgürlük</a></li>
+                        {% endfor %}
+                        <li>
+                            <a href="{% url 'courses' %}" class="nav-link fw-semibold text-info">
+                                Tüm kategoriler
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-12">
+                <div class="mb-4">
+                    <h3 class="fw-bold mb-3">Bize ulaş</h3>
+
+                    <p>
+                        Rotaya topluluğu, gerçek deneyimlerden öğrenmek isteyen herkes için kuruldu.
+                    </p>
+
+                    <p class="mb-2">
+                        Email:
+                        <a href="mailto:support@rotaya.co" class="text-info">
+                            support@rotaya.co
+                        </a>
+                    </p>
+
+                    <p class="mb-0">
+                        Çalışma Saatleri:
+                        <span class="text-dark fw-semibold">
+                            Pazartesi - Cumartesi / 09:00 - 18:00
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row align-items-center g-0 border-top py-2 mt-6">
+            <div class="col-lg-4 col-md-5 col-12">
+                <span>
+                    © <span id="copyright2"></span> Rotaya. Tüm hakları saklıdır.
+                </span>
+            </div>
+
+            <div class="col-12 col-md-7 col-lg-8 d-md-flex justify-content-end">
+                <nav class="nav nav-footer">
+                    <a class="nav-link ps-0" href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Gizlilik Politikası</a>
+                    <a class="nav-link px-2 px-md-3" href="#" data-bs-toggle="modal" data-bs-target="#cookieModal">Çerez Politikası</a>
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Kullanım Şartları</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Gizlilik Politikası Modal -->
+<div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-0">
+                <h3 class="modal-title fw-bold" id="privacyModalLabel">Gizlilik Politikası</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Rotaya, kullanıcılarının gizliliğine önem verir. Platformumuzu kullanırken paylaştığınız ad, e-posta adresi,
+                    üyelik bilgileri ve kullanım verileri yalnızca hizmet sunmak, hesabınızı yönetmek ve deneyiminizi iyileştirmek
+                    amacıyla kullanılabilir.
+                </p>
+                <p>
+                    Kişisel bilgileriniz izniniz olmadan üçüncü kişilerle satılmaz veya paylaşılmaz. Ancak ödeme altyapısı,
+                    güvenlik, teknik destek ve yasal yükümlülükler kapsamında güvenilir hizmet sağlayıcılarla sınırlı veri paylaşımı yapılabilir.
+                </p>
+                <p class="mb-0">
+                    Gizlilikle ilgili sorularınız için bizimle <a href="mailto:support@rotaya.co">support@rotaya.co</a> üzerinden iletişime geçebilirsiniz.
+                </p>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-info" data-bs-dismiss="modal">Anladım</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Çerez Politikası Modal -->
+<div class="modal fade" id="cookieModal" tabindex="-1" aria-labelledby="cookieModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-0">
+                <h3 class="modal-title fw-bold" id="cookieModalLabel">Çerez Politikası</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Rotaya, kullanıcı deneyimini geliştirmek, oturum yönetimini sağlamak, güvenliği artırmak ve platform performansını analiz etmek için çerezler kullanabilir.
+                </p>
+                <p>
+                    Çerezler; tercihlerinizi hatırlamak, giriş durumunuzu korumak ve hangi içeriklerin daha faydalı olduğunu anlamak için kullanılabilir.
+                </p>
+                <p class="mb-0">
+                    Tarayıcı ayarlarınızdan çerezleri yönetebilir veya devre dışı bırakabilirsiniz. Ancak bazı özellikler bu durumda düzgün çalışmayabilir.
+                </p>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-info" data-bs-dismiss="modal">Anladım</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Kullanım Şartları Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-0">
+                <h3 class="modal-title fw-bold" id="termsModalLabel">Kullanım Şartları</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Rotaya, gerçek deneyimlerden öğrenmek isteyen kullanıcılar için hazırlanmış bir içerik ve topluluk platformudur.
+                    Platformdaki içerikler eğitim, ilham ve kişisel gelişim amacıyla sunulur.
+                </p>
+                <p>
+                    Kullanıcılar, platformdaki içerikleri izinsiz kopyalayamaz, çoğaltamaz, paylaşamaz veya ticari amaçla kullanamaz.
+                    Üyelik bilgileri kişiye özeldir ve üçüncü kişilerle paylaşılmamalıdır.
+                </p>
+                <p class="mb-0">
+                    Rotaya, içeriklerde, üyelik koşullarında ve platform özelliklerinde gerektiğinde değişiklik yapma hakkını saklı tutar.
+                </p>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-info" data-bs-dismiss="modal">Anladım</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("copyright2").textContent = new Date().getFullYear();
+</script>
+        <!-- Scroll top -->
+        <div class="btn-scroll-top">
+    <svg class="progress-square svg-content" width="100%" height="100%" viewBox="0 0 40 40">
+        <path d="M8 1H32C35.866 1 39 4.13401 39 8V32C39 35.866 35.866 39 32 39H8C4.13401 39 1 35.866 1 32V8C1 4.13401 4.13401 1 8 1Z" />
+    </svg>
+</div>
+
+
+        <!-- Scripts -->
+
+        <!-- Libs JS -->
+<script src="{% static 'assets/libs/@popperjs/core/dist/umd/popper.min.js' %}"></script>
+<script src="{% static 'assets/libs/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/libs/simplebar/dist/simplebar.min.js' %}"></script>
+
+<!-- Theme JS -->
+<script src="{% static 'assets/js/theme.min.js' %}"></script>
+
+        <script src="{% static 'assets/libs/tiny-slider/dist/min/tiny-slider.js' %}"></script>
+
+        <script src="{% static 'assets/libs/tippy.js/dist/tippy-bundle.umd.min.js' %}"></script>
+
+        <script src="{% static 'assets/js/vendors/tnsSlider.js' %}"></script>
+        <script src="{% static 'assets/js/vendors/tooltip.js' %}"></script>
+
+    <script src="{% static 'assets/libs/typed.js/dist/typed.umd.js' %}"></script>
+    <script src="{% static 'assets/js/vendors/typed.js' %}"></script>
+
+
+    <!-- ROTAYA PAYMENT INFO MODAL -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+
+          <div class="modal-header border-0 px-5 pt-5">
+            <div>
+              <h3 class="fw-bold mb-1">Rotaya Ödeme Bilgisi</h3>
+              <p class="text-muted mb-0">
+                <span id="selectedPlan">Rotaya Basic</span> —
+                <strong id="selectedPrice">₺2500 / Aylık</strong>
+              </p>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body px-5 pb-5">
+
+            <p class="fs-5 text-dark">
+              Rotaya, Volkan Güler tarafından kurulmuş bir YouTube işletmesidir.
+            </p>
+
+            <div id="paymentChoiceArea">
+
+              <a
+                id="youtubePaymentButton"
+                href="{% if payment_setting %}{{ payment_setting.youtube_join_url }}{% else %}https://www.youtube.com/channel/UCki5h5npPunCWXENktDcNBA/join{% endif %}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-info w-100 mt-3">
+                YouTube Üzerinden Öde
+              </a>
+
+              <button
+                type="button"
+                class="btn btn-outline-secondary w-100 mt-3"
+                disabled
+                id="showBankTransferForm">
+                Havale / EFT ile Öde — %20 İndirimli
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-outline-secondary w-100 mt-3"
+                disabled>
+                Kredi Kartı / Banka Kartı — Yakında Aktif
+              </button>
+
+              <button type="button" class="btn btn-light w-100 mt-3 open-signup-from-payment">
+                Zaten Kodum Var, Kayıt Ol
+              </button>
+
+            </div>
+
+            <div id="bankTransferEmailArea" style="display:none;">
+
+              <div class="alert alert-success">
+                <strong>%20 indirim uygulanır.</strong><br>
+                YouTube komisyonu düşülmediği için banka transferinde indirimli ödeme alınır.
+              </div>
+
+              <p class="text-muted">
+                Devam etmek için e-posta adresinizi yazın. Ödeme sonrası tüm erişim bilgileri bu e-posta adresine iletilecektir.
+                Faturanız ayrıca gönderilecektir.
+              </p>
+
+              <form id="bankTransferOrderForm">
+                {% csrf_token %}
+
+                <input type="hidden" name="plan" id="bankPlanInput">
+                <input type="hidden" name="price" id="bankPriceInput">
+
+                <div class="mb-3">
+                  <label class="form-label">E-posta Adresiniz</label>
+                  <input
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    placeholder="ornek@email.com"
+                    required>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">
+                  Devam Et
+                </button>
+
+                <button type="button" class="btn btn-light w-100 mt-2" id="backToPaymentChoices">
+                  Geri Dön
+                </button>
+              </form>
+
+            </div>
+
+            <div id="bankTransferResultArea" style="display:none;">
+
+              <div class="alert alert-info">
+                Havale / EFT siparişiniz oluşturuldu.
+              </div>
+
+              <div class="border rounded-3 p-4 bg-light mb-3">
+                {% if payment_setting %}
+                  <p class="mb-2">
+                    <strong>Banka:</strong> {{ payment_setting.bank_name }}
+                  </p>
+
+                  <p class="mb-2">
+                    <strong>Alıcı:</strong> {{ payment_setting.account_holder }}
+                  </p>
+
+                  <p class="mb-2">
+                    <strong>IBAN:</strong>
+                    <span class="fw-bold text-dark">{{ payment_setting.iban }}</span>
+                  </p>
+                {% else %}
+                  <p class="text-danger mb-0">
+                    Banka bilgileri admin panelinden tanımlanmadı.
+                  </p>
+                {% endif %}
+              </div>
+
+              <div class="alert alert-warning">
+                <p class="mb-2">
+                  <strong>Ödenecek Tutar:</strong>
+                  ₺<span id="bankDiscountedPrice"></span>
+                </p>
+
+                <p class="mb-2">
+                  <strong>Havale Açıklama Kodu:</strong>
+                  <span id="bankPaymentCode" class="fw-bold fs-4"></span>
+                </p>
+
+                <p class="mb-0">
+                  Lütfen ödeme açıklamasına sadece bu 8 haneli kodu yazınız.
+                </p>
+              </div>
+
+              <p class="text-muted mb-0">
+                Ödemeniz kontrol edildikten sonra erişim bilgileriniz
+                <strong id="bankResultEmail"></strong>
+                adresine iletilecektir. Faturanız ayrıca e-posta ile gönderilecektir.
+              </p>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- LOGIN MODAL -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+          <div class="modal-body p-6">
+
+            <div class="mb-4">
+              <a href="/">
+                <img src="{% static 'assets/images/brand/logo/logo-icon.svg' %}" class="mb-4" alt="logo">
+              </a>
+
+              <h1 class="mb-1 fw-bold">Giriş Yap</h1>
+              <span>
+                Hesabın yok mu?
+                <a href="#" class="ms-1 switch-to-signup">Kayıt Ol</a>
+              </span>
+            </div>
+
+            <form method="post" action="{% url 'login' %}">
+              {% csrf_token %}
+
+              <input type="hidden" name="next" value="{{ request.path }}?login=success">
+
+              <div class="mb-3">
+                <label class="form-label">YouTube Kullanıcı Adı</label>
+                <input
+                  type="text"
+                  name="username"
+                  class="form-control"
+                  placeholder="Örn: @volkanguler"
+                  required>
+                <div class="form-text">
+                  Mümkünse YouTube kullanıcı adınızı yazın.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Şifre</label>
+                <input type="password" name="password" class="form-control" placeholder="********" required>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-info">
+                  Giriş Yap
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- SIGNUP MODAL -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+          <div class="modal-body p-6">
+
+            <div class="mb-4">
+              <a href="/">
+                <img src="{% static 'assets/images/brand/logo/logo-icon.svg' %}" class="mb-4" alt="logo">
+              </a>
+
+              <h1 class="mb-1 fw-bold">Kayıt Ol</h1>
+              <span>
+                Zaten hesabın var mı?
+                <a href="#" class="ms-1 switch-to-login">Giriş Yap</a>
+              </span>
+            </div>
+
+            <form method="post" action="{% url 'signup' %}">
+              {% csrf_token %}
+
+              <div class="mb-3">
+                <label class="form-label">Doğrulama Kodu</label>
+                <input
+                  type="text"
+                  name="registration_code"
+                  class="form-control"
+                  placeholder="Ödeme sonrası size iletilen kod"
+                  required>
+                <div class="form-text">
+                  Bu kod, ödeme sonrası size özel olarak verilir.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">YouTube Kullanıcı Adı</label>
+                <input
+                  type="text"
+                  name="username"
+                  class="form-control"
+                  placeholder="Örn: @volkanguler"
+                  required>
+                <div class="form-text">
+                  Mümkünse YouTube kullanıcı adınızı yazın. Giriş yaparken de bunu kullanacaksınız.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">E-posta</label>
+                <input type="email" name="email" class="form-control" placeholder="E-posta adresin" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Şifre</label>
+                <input type="password" name="password1" class="form-control" placeholder="En az 8 karakter" minlength="8" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Şifre Tekrar</label>
+                <input type="password" name="password2" class="form-control" placeholder="Şifreyi tekrar yaz" minlength="8" required>
+              </div>
+
+              <div class="mb-3">
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="agreeCheck" required>
+                  <label class="form-check-label" for="agreeCheck">
+                    Kullanım şartlarını ve gizlilik politikasını kabul ediyorum.
+                  </label>
+                </div>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-info">
+                  Hesap Oluştur
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- LOGIN SUCCESS MODAL -->
+    <div class="modal fade" id="loginSuccessModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+          <div class="modal-body p-6 text-center">
+
+            <div class="display-3 text-success mb-3">
+              <i class="fe fe-check-circle"></i>
+            </div>
+
+            <h2 class="fw-bold mb-2">Giriş Başarılı</h2>
+
+            <p class="lead mb-4">
+              Artık tüm içeriklere ulaşabilirsiniz.
+            </p>
+
+            <button type="button" class="btn btn-info w-100" data-bs-dismiss="modal">
+              İçerikleri Keşfet
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const pricingModalEl = document.getElementById("pricingModal");
+      const paymentModalEl = document.getElementById("paymentModal");
+      const loginModalEl = document.getElementById("loginModal");
+      const signupModalEl = document.getElementById("signupModal");
+      const loginSuccessModalEl = document.getElementById("loginSuccessModal");
+
+      const pricingModal = pricingModalEl ? new bootstrap.Modal(pricingModalEl) : null;
+      const paymentModal = paymentModalEl ? new bootstrap.Modal(paymentModalEl) : null;
+      const loginModal = loginModalEl ? new bootstrap.Modal(loginModalEl) : null;
+      const signupModal = signupModalEl ? new bootstrap.Modal(signupModalEl) : null;
+      const loginSuccessModal = loginSuccessModalEl ? new bootstrap.Modal(loginSuccessModalEl) : null;
+
+      document.querySelectorAll(".open-pricing").forEach(function (button) {
+        button.addEventListener("click", function (e) {
+          e.preventDefault();
+          if (pricingModal) pricingModal.show();
+        });
+      });
+
+      document.querySelectorAll(".open-payment").forEach(function (button) {
+        button.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          const plan = this.getAttribute("data-plan");
+          const price = this.getAttribute("data-price");
+
+          const selectedPlan = document.getElementById("selectedPlan");
+          const selectedPrice = document.getElementById("selectedPrice");
+
+          if (selectedPlan) selectedPlan.innerText = plan;
+          if (selectedPrice) selectedPrice.innerText = price;
+
+          if (pricingModal) pricingModal.hide();
+
+          setTimeout(function () {
+            if (paymentModal) paymentModal.show();
+          }, 400);
+        });
+      });
+
+      document.querySelectorAll(".open-login").forEach(function (button) {
+        button.addEventListener("click", function (e) {
+          e.preventDefault();
+          if (loginModal) loginModal.show();
+        });
+      });
+
+      document.querySelectorAll(".open-signup").forEach(function (button) {
+        button.addEventListener("click", function (e) {
+          e.preventDefault();
+          if (signupModal) signupModal.show();
+        });
+      });
+
+      document.querySelectorAll(".open-signup-from-payment").forEach(function (button) {
+        button.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          if (paymentModal) paymentModal.hide();
+
+          setTimeout(function () {
+            if (signupModal) signupModal.show();
+          }, 300);
+        });
+      });
+
+      document.querySelectorAll(".switch-to-signup").forEach(function (button) {
+        button.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          if (loginModal) loginModal.hide();
+
+          setTimeout(function () {
+            if (signupModal) signupModal.show();
+          }, 300);
+        });
+      });
+
+      document.querySelectorAll(".switch-to-login").forEach(function (button) {
+        button.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          if (signupModal) signupModal.hide();
+
+          setTimeout(function () {
+            if (loginModal) loginModal.show();
+          }, 300);
+        });
+      });
+
+      const params = new URLSearchParams(window.location.search);
+
+      if (params.get("login") === "success" && loginSuccessModal) {
+        loginSuccessModal.show();
+
+        const cleanUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    });
+    </script>
+
+
+    <!-- ROTAYA PRICING POPUP -->
+    <div class="modal fade" id="pricingModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+
+          <div class="modal-header border-0 px-5 pt-5">
+            <div>
+              <h2 class="fw-bold mb-1">Rotaya ile Hayatını Dönüştür</h2>
+              <p class="mb-0 text-muted">
+                Gerçek deneyim, gerçek insanlar, gerçek sonuçlar.
+              </p>
+            </div>
+
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body px-5 pb-5">
+            <div class="row justify-content-center g-4">
+
+              <!-- BASIC -->
+              <div class="col-lg-5 col-md-6 col-12">
+                <div class="card h-100 border shadow-sm">
+                  <div class="border-top border-4 rounded-3 border-info">
+
+                    <div class="p-5 text-center">
+                      <h3 class="fw-bold">Rotaya Basic</h3>
+
+                      <p>
+                        Topluluğa katıl, öğrenmeye başla
+                      </p>
+
+                      <h2 class="fw-bold mt-4">
+                        ₺2500
+                        <span class="fs-5 fw-normal">/ Aylık</span>
+                      </h2>
+
+                      <button
+                        class="btn btn-outline-info mt-3 w-100 open-payment"
+                        data-plan="Rotaya Basic"
+                        data-price="₺2500 / Aylık">
+                        Öde
+                      </button>
+                    </div>
+
+                    <hr class="m-0">
+
+                    <div class="p-5">
+                      <h5 class="fw-bold mb-4">Neler dahil?</h5>
+
+                      <ul class="list-unstyled">
+                        <li class="mb-2">✔ Tüm içeriklere sınırsız erişim</li>
+                        <li class="mb-2">✔ Tüm videolar ve eğitimler</li>
+                        <li class="mb-2">✔ Topluluğun parçası ol</li>
+                        <li class="mb-2">✔ Soru sor, cevap al</li>
+                        <li class="mb-2">✔ Sürekli güncellenen içerikler</li>
+                      </ul>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <!-- PREMIUM -->
+              <div class="col-lg-5 col-md-6 col-12">
+                <div class="card h-100 border shadow-lg">
+                  <div class="border-top border-4 rounded-3 border-dark">
+
+                    <div class="p-5 text-center">
+                      <h3 class="fw-bold">Rotaya Premium</h3>
+
+                      <p>
+                        Hayatını hızlandır, direkt ilerle
+                      </p>
+
+                      <h2 class="fw-bold mt-4">
+                        ₺12500
+                        <span class="fs-5 fw-normal">/ Aylık</span>
+                      </h2>
+
+                      <button
+                        class="btn btn-dark mt-3 w-100 open-payment"
+                        data-plan="Rotaya Premium"
+                        data-price="₺12500 / Aylık">
+                        Öde
+                      </button>
+                    </div>
+
+                    <hr class="m-0">
+
+                    <div class="p-5">
+                      <h5 class="fw-bold mb-4">Her şey dahil +</h5>
+
+                      <ul class="list-unstyled">
+                        <li class="mb-2">✔ Basic paketteki her şey</li>
+                        <li class="mb-2">✔ Birebir mentörlük</li>
+                        <li class="mb-2">✔ Sınırsız yazılı soru & cevap</li>
+                        <li class="mb-2">✔ Ayda 15 dk birebir görüşme</li>
+                        <li class="mb-2">✔ İstediğin mentörle konuşma</li>
+                        <li class="mb-2">✔ Kişisel yol haritası</li>
+                        <li class="mb-2">✔ Öncelikli destek</li>
+                      </ul>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- PAID MEMBERSHIP REQUIRED MODAL -->
+    <div class="modal fade" id="paidRequiredModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+
+          <div class="modal-body p-6 text-center">
+
+            <div class="display-3 text-warning mb-3">
+              <i class="fe fe-lock"></i>
+            </div>
+
+            <h2 class="fw-bold mb-2">
+              Ücretli Üyelik Gerekli
+            </h2>
+
+            <p class="lead mb-4">
+              Bu içeriğe erişmek için ücretli üye olmanız gerekir.
+            </p>
+
+            <div class="d-grid gap-2">
+              <a href="#" class="btn btn-info open-pricing-from-lock">
+                Ücretli Üye Ol
+              </a>
+
+              {% if not user.is_authenticated %}
+                <a href="#" class="btn btn-outline-info open-login-from-lock">
+                  Giriş Yap
+                </a>
+              {% endif %}
+
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                Şimdilik Kapat
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const paidRequiredModalEl = document.getElementById("paidRequiredModal");
+      const pricingModalEl = document.getElementById("pricingModal");
+      const loginModalEl = document.getElementById("loginModal");
+
+      const paidRequiredModal = paidRequiredModalEl
+        ? bootstrap.Modal.getOrCreateInstance(paidRequiredModalEl)
+        : null;
+
+      const pricingModal = pricingModalEl
+        ? bootstrap.Modal.getOrCreateInstance(pricingModalEl)
+        : null;
+
+      const loginModal = loginModalEl
+        ? bootstrap.Modal.getOrCreateInstance(loginModalEl)
+        : null;
+
+      document.querySelectorAll(".open-paid-required").forEach(function (button) {
+        button.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          if (paidRequiredModal) {
+            paidRequiredModal.show();
+          }
+        });
+      });
+
+      document.querySelectorAll(".open-pricing-from-lock").forEach(function (button) {
+        button.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          if (!paidRequiredModal || !pricingModal) return;
+
+          paidRequiredModalEl.addEventListener("hidden.bs.modal", function openPricingOnce() {
+            pricingModal.show();
+            paidRequiredModalEl.removeEventListener("hidden.bs.modal", openPricingOnce);
+          });
+
+          paidRequiredModal.hide();
+        });
+      });
+
+      document.querySelectorAll(".open-login-from-lock").forEach(function (button) {
+        button.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          if (!paidRequiredModal || !loginModal) return;
+
+          paidRequiredModalEl.addEventListener("hidden.bs.modal", function openLoginOnce() {
+            loginModal.show();
+            paidRequiredModalEl.removeEventListener("hidden.bs.modal", openLoginOnce);
+          });
+
+          paidRequiredModal.hide();
+        });
+      });
+    });
+    </script>
+
+    <!-- STORY MODAL -->
+    <div class="modal fade" id="storyModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+
+          <div class="modal-body p-5 text-center">
+
+            <div class="display-5 mb-3">
+              ✨
+            </div>
+
+            <h2 class="fw-bold mb-3">
+              Hikayeni Bizimle Paylaş
+            </h2>
+
+            <p class="text-muted mb-4">
+              Çok basit.<br><br>
+
+              Kısaca hikayenizi anlatın ve bize mail atın.<br><br>
+
+              <strong>support@rotaya.co</strong><br><br>
+
+              Size 2 iş günü içinde ulaşacağız.
+            </p>
+
+            <a href="mailto:support@rotaya.co"
+               class="btn btn-info w-100">
+               Mail Gönder
+            </a>
+
+            <button type="button"
+                    class="btn btn-light w-100 mt-2"
+                    data-bs-dismiss="modal">
+              Kapat
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const storyModalEl = document.getElementById("storyModal");
+
+        if (storyModalEl) {
+
+            const storyModal = new bootstrap.Modal(storyModalEl);
+
+            document.querySelectorAll(".open-story-modal").forEach(function(button) {
+
+                button.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    storyModal.show();
+                });
+
+            });
+        }
+
+    });
+    </script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const paymentChoiceArea = document.getElementById("paymentChoiceArea");
+      const bankTransferEmailArea = document.getElementById("bankTransferEmailArea");
+      const bankTransferResultArea = document.getElementById("bankTransferResultArea");
+
+      const showBankTransferForm = document.getElementById("showBankTransferForm");
+      const backToPaymentChoices = document.getElementById("backToPaymentChoices");
+      const bankTransferOrderForm = document.getElementById("bankTransferOrderForm");
+
+      const bankPlanInput = document.getElementById("bankPlanInput");
+      const bankPriceInput = document.getElementById("bankPriceInput");
+
+      if (showBankTransferForm) {
+        showBankTransferForm.addEventListener("click", function () {
+          const selectedPlanText = document.getElementById("selectedPlan").innerText;
+          const selectedPriceText = document.getElementById("selectedPrice").innerText;
+
+          let plan = "basic";
+          let price = "2500";
+
+          if (selectedPlanText.toLowerCase().includes("premium")) {
+            plan = "premium";
+            price = "12500";
+          }
+
+          bankPlanInput.value = plan;
+          bankPriceInput.value = price;
+
+          paymentChoiceArea.style.display = "none";
+          bankTransferEmailArea.style.display = "block";
+          bankTransferResultArea.style.display = "none";
+        });
+      }
+
+      if (backToPaymentChoices) {
+        backToPaymentChoices.addEventListener("click", function () {
+          paymentChoiceArea.style.display = "block";
+          bankTransferEmailArea.style.display = "none";
+          bankTransferResultArea.style.display = "none";
+        });
+      }
+
+      if (bankTransferOrderForm) {
+        bankTransferOrderForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const formData = new FormData(bankTransferOrderForm);
+
+          fetch("{% url 'create_bank_transfer_order' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+              "X-CSRFToken": formData.get("csrfmiddlewaretoken")
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (!data.success) {
+              alert(data.message || "Bir hata oluştu.");
+              return;
+            }
+
+            document.getElementById("bankDiscountedPrice").innerText = data.discounted_price;
+            document.getElementById("bankPaymentCode").innerText = data.payment_code;
+            document.getElementById("bankResultEmail").innerText = data.email;
+
+            paymentChoiceArea.style.display = "none";
+            bankTransferEmailArea.style.display = "none";
+            bankTransferResultArea.style.display = "block";
+          })
+          .catch(() => {
+            alert("Sipariş oluşturulurken bir hata oluştu.");
+          });
+        });
+      }
+    });
+    </script>
+
+    </body>
+</html>
