@@ -374,9 +374,12 @@ def signup(request):
         password1 = request.POST.get("password1", "")
         password2 = request.POST.get("password2", "")
 
+        today = timezone.localdate()
+
         registration_code = RegistrationCode.objects.filter(
             code=registration_code_value,
-            valid_date=timezone.localdate(),
+            valid_date__lte=today,
+            last_day__gte=today,
             is_active=True
         ).first()
 
@@ -423,6 +426,7 @@ def signup(request):
             has_paid=True,
             is_active_member=True,
             membership_started_at=timezone.now(),
+            membership_expires_at=timezone.now() + timezone.timedelta(days=365),
             registration_code=registration_code,
         )
 
