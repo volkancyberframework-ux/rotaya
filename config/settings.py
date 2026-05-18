@@ -43,12 +43,12 @@ DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.environ.get(
     "ALLOWED_HOSTS",
-    "localhost,127.0.0.1,.onrender.com"
+    "localhost,127.0.0.1,.onrender.com,rotaya.co,www.rotaya.co"
 ).split(",")
 
 CSRF_TRUSTED_ORIGINS = os.environ.get(
     "CSRF_TRUSTED_ORIGINS",
-    "https://*.onrender.com"
+    "https://*.onrender.com,https://rotaya.co,https://www.rotaya.co"
 ).split(",")
 
 # =========================
